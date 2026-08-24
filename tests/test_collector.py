@@ -49,7 +49,10 @@ FOCUS_HTML = """
 MEAL_HTML = """
 <table class="smu-table tb-w150">
   <thead><tr><th scope="col">월(08.24)</th></tr></thead>
-  <tbody><tr><th scope="row">푸드코트</th><td><ul><li>볶음밥</li><li>샐러드</li></ul></td></tr></tbody>
+  <tbody>
+    <tr><th scope="row">한식</th><td><ul><li>잡곡밥</li><li>된장찌개</li></ul></td></tr>
+    <tr><th scope="row">푸드코트</th><td><ul><li>볶음밥</li><li>샐러드</li></ul></td></tr>
+  </tbody>
 </table>
 """
 
@@ -75,9 +78,16 @@ class CollectorRegressionTest(unittest.TestCase):
     def test_restaurant_board_and_food_court(self):
         with patch("collector.fetch", return_value=MEAL_HTML):
             rows = collector.list_notices("restaurant", date="2026-08-23")
-        self.assertEqual(len(rows), 4)
-        self.assertEqual(rows[0]["corner"], "푸드코트")
-        self.assertEqual(rows[0]["menu"], ["볶음밥", "샐러드"])
+        self.assertEqual(len(rows), 8)
+        self.assertEqual({row["corner"] for row in rows}, {"한식(식판)", "푸드코트"})
+        food_court = next(row for row in rows if row["corner"] == "푸드코트")
+        self.assertEqual(food_court["menu"], ["볶음밥", "샐러드"])
+
+    def test_restaurant_ids_are_stable_within_the_same_week(self):
+        with patch("collector.fetch", return_value=MEAL_HTML):
+            first = collector.list_notices("restaurant", date="2026-08-23")
+            second = collector.list_notices("restaurant", date="2026-08-25")
+        self.assertEqual({row["id"] for row in first}, {row["id"] for row in second})
 
     def test_three_standard_webzines(self):
         for key in ("today", "newsletter"):

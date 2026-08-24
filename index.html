@@ -216,7 +216,7 @@
         <dl class="model-facts">
           <div><dt>방식</dt><dd>On-Device AI 언어 모델(Google Gemma 4 E2B)</dd></div>
           <div><dt>라이선스</dt><dd><a href="https://ai.google.dev/gemma/apache_2" target="_blank" rel="noopener noreferrer">Apache License 2.0</a></dd></div>
-          <div><dt>실행</dt><dd>Transformers.js / WebGPU / q4f16</dd></div>
+          <div><dt>실행</dt><dd>Transformers.js / WebGPU / q4f16, 최신 Chrome·Edge</dd></div>
           <div><dt>저장</dt><dd id="modelStorageEstimate">브라우저 캐시, 수 GB의 여유 공간 권장</dd></div>
           <div><dt>전송</dt><dd>추론 입력은 외부 서버로 전송하지 않음</dd></div>
         </dl>
@@ -230,7 +230,7 @@
           <button id="downloadModelButton" class="primary-button" type="button">On-Device AI 모델 다운로드</button>
           <button id="deleteModelButton" class="secondary-button danger" type="button" hidden>모델 삭제</button>
         </div>
-        <p class="fine-print">최초 모델 다운로드에는 네트워크가 필요합니다. 이후 추론은 현재 기기에서 실행되지만, 브라우저가 라이브러리 또는 모델 캐시를 확인하거나 갱신하기 위해 네트워크에 다시 연결할 수 있습니다. WebGPU와 브라우저 캐시 지원은 브라우저 및 기기에 따라 다릅니다.</p>
+        <p class="fine-print">최초 모델 다운로드에는 네트워크가 필요합니다. 이후 추론은 현재 기기에서 실행되지만, 브라우저가 라이브러리 또는 모델 캐시를 확인하거나 갱신하기 위해 네트워크에 다시 연결할 수 있습니다. 현재 iPhone·iPad 브라우저와 Safari에서는 AI 기능을 지원하지 않습니다.</p>
       </section>
       <section class="setting-section" aria-labelledby="personalizationTitle">
         <div class="setting-title"><h3 id="personalizationTitle">내 관심 정보</h3><span id="personalizationStateBadge" class="status-badge">브라우저에 저장</span></div>
@@ -321,7 +321,7 @@
       <dl class="on-device-facts">
         <div><dt>개인정보 보호</dt><dd>화면의 주요 내용과 입력한 질문을 외부 AI 서버로 전송하지 않습니다.</dd></div>
         <div><dt>모델 다운로드</dt><dd>처음 사용할 때 인터넷으로 모델을 내려받습니다. 이후에는 브라우저 캐시를 우선 사용하지만 캐시 확인이나 갱신을 위한 통신이 발생할 수 있습니다.</dd></div>
-        <div><dt>기기 요구 사항</dt><dd>WebGPU를 지원하는 브라우저와 수 GB의 저장 공간이 필요하며, 기기 성능에 따라 생성 속도가 달라질 수 있습니다.</dd></div>
+        <div><dt>기기 요구 사항</dt><dd>WebGPU 백엔드가 지원되는 최신 Chrome·Edge와 수 GB의 저장 공간이 필요합니다. 현재 iPhone·iPad 브라우저와 Safari에서는 사용할 수 없습니다.</dd></div>
         <div><dt>모델 라이선스</dt><dd>Gemma 4는 Apache License 2.0으로 제공됩니다.</dd></div>
         <div><dt>음성·공유</dt><dd>음성 재생 시 결과가 브라우저 또는 운영체제의 음성 엔진에 전달됩니다. 공유는 이용자가 버튼을 선택한 경우에만 실행됩니다.</dd></div>
         <div><dt>사용자 확인</dt><dd>AI가 만든 요약과 답변에는 오류가 있을 수 있으므로 중요한 내용은 반드시 원문에서 확인해 주세요.</dd></div>
@@ -331,6 +331,6 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
   <noscript><div class="noscript">이 사이트의 검색과 필터를 사용하려면 JavaScript를 활성화해야 합니다.</div></noscript>
-  <script type="module" src="./app.js?v=20260825-12"></script>
+  <script type="module" src="./app.js?v=20260825-13"></script>
 </body>
 </html>

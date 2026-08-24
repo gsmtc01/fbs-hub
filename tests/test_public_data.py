@@ -28,7 +28,7 @@ class PublicDataPolicyTest(unittest.TestCase):
                 "summary": "",
                 "writer": "정보통신팀",
                 "url": "https://example.com/item",
-                **({"day": "월(08.24)", "meal": "중식", "corner": "한식", "menu": ["밥"]}
+                **({"day": "월(08.24)", "meal": "중식", "corner": "한식(식판)", "menu": ["밥"]}
                    if key == "restaurant" else {}),
             } for key in boards],
         }

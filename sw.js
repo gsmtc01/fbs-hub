@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fbs-shell-v32';
+const CACHE_NAME = 'fbs-shell-v33';
 const APP_SHELL = [
   './', './index.html', './styles.css', './app.js', './local-llm.js',
   './manifest.webmanifest', './assets/favicon.svg', './data/notices.json',

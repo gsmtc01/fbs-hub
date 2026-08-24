@@ -13,6 +13,8 @@ from pathlib import Path
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
+from meal_utils import meal_identity, normalize_meal_corner, resolve_meal_date
+
 ROOT = Path(__file__).resolve().parent
 DEFAULT_DB = ROOT / "notices.db"
 DEFAULT_OUTPUT = ROOT / "data" / "notices.json"
@@ -61,8 +63,29 @@ def legacy_meal_fields(row: sqlite3.Row) -> tuple[str, str, str, list[str]]:
     day = row["day"] or (title[:-len(meal)].strip() if meal and title.endswith(meal) else title)
     if not menu:
         menu = [part.strip() for part in re.split(r"\s*[·/]\s*", row["summary"] or "") if part.strip()]
-    corner = row["corner"] or ("한식" if menu else "")
+    corner = normalize_meal_corner(row["corner"] or ("한식(식판)" if menu else ""))
     return meal, day, corner, menu
+
+
+def dedupe_restaurant_rows(rows: list[sqlite3.Row]) -> list[sqlite3.Row]:
+    """같은 제공일·식사·코너를 여러 번 수집한 구형 레코드 중 최신 항목만 남긴다."""
+    winners: dict[str, sqlite3.Row] = {}
+    for row in rows:
+        if row["board"] != "restaurant":
+            continue
+        meal, day, corner, _menu = legacy_meal_fields(row)
+        identity = meal_identity(day, meal, corner, row["date"] or "")
+        current = winners.get(identity)
+        if current is None or (row["last_seen"] or "", row["key"]) > (
+            current["last_seen"] or "", current["key"]
+        ):
+            winners[identity] = row
+
+    winner_keys = {row["key"] for row in winners.values()}
+    return [
+        row for row in rows
+        if row["board"] != "restaurant" or row["key"] in winner_keys
+    ]
 
 
 def export(db_path: Path, output_path: Path) -> dict:
@@ -87,6 +110,7 @@ def export(db_path: Path, output_path: Path) -> dict:
         ):
             latest_runs[run["board"]] = dict(run)
     connection.close()
+    rows = dedupe_restaurant_rows(rows)
 
     items = []
     for row in rows:
@@ -110,7 +134,10 @@ def export(db_path: Path, output_path: Path) -> dict:
         }
         if row["board"] == "restaurant":
             meal, day, corner, menu = legacy_meal_fields(row)
+            served_on = resolve_meal_date(day, row["date"] or "")
             item.update({
+                "id": f"restaurant:{meal_identity(day, meal, corner, row['date'] or '')}",
+                "date": served_on,
                 "meal": meal,
                 "day": day,
                 "corner": corner,

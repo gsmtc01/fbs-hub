@@ -18,6 +18,8 @@ from dataclasses import dataclass, asdict, field
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
+from meal_utils import meal_identity, normalize_meal_corner, resolve_meal_date
+
 UA = ("FbsHub/1.0 (unofficial SMU student project; "
       "contact via the project GitHub Issues page)")
 SEOUL_TZ = ZoneInfo("Asia/Seoul")
@@ -354,7 +356,8 @@ def list_restaurant(board: Board, date: str | None = None, **_) -> list[dict]:
             continue
         for row in re.finditer(r"<tr>(.*?)</tr>", body.group(1), re.S):
             r = row.group(1)
-            corner = re.search(r'<th scope="row">\s*(.*?)\s*</th>', r, re.S)
+            corner_match = re.search(r'<th scope="row">\s*(.*?)\s*</th>', r, re.S)
+            corner = normalize_meal_corner(clean(corner_match.group(1)) if corner_match else "")
             for i, cell in enumerate(re.findall(r"<td[^>]*>(.*?)</td>", r, re.S)):
                 items = [clean(li) for li in re.findall(r"<li>(.*?)</li>", cell, re.S)]
                 if not items:
@@ -362,13 +365,14 @@ def list_restaurant(board: Board, date: str | None = None, **_) -> list[dict]:
                 day = days[i] if i < len(days) else ""
                 out.append({
                     "board": board.key, "board_name": board.name,
-                    "id": f"{date}-{code}-{i}-{len(out)}",
+                    "id": meal_identity(day, meal, corner, date),
                     "meal": meal, "day": day,
-                    "corner": clean(corner.group(1)) if corner else "",
+                    "corner": corner,
                     "menu": items,
                     "title": f"{day} {meal}".strip(),
                     "summary": " / ".join(items),
-                    "date": date, "writer": "", "views": 0, "thumbnail": None,
+                    "date": resolve_meal_date(day, date),
+                    "writer": "", "views": 0, "thumbnail": None,
                     "link_type": "internal", "url": page_url,
                 })
     return out

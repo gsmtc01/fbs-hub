@@ -1,4 +1,4 @@
-import { localAI } from './local-llm.js?v=20260825-7';
+import { localAI } from './local-llm.js?v=20260825-8';
 
 const CONFIG = {
   dataUrl: './data/notices.json',

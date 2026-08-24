@@ -41,6 +41,58 @@ function modelCacheNeedles() {
   return [MODEL_ID, encodeURIComponent(MODEL_ID), MODEL_ID.replace('/', '%2F')];
 }
 
+export function getLocalAISupport(environment = {}) {
+  const browserNavigator = globalThis.navigator || {};
+  const secureContext = environment.secureContext ?? globalThis.isSecureContext ?? false;
+  const hasGPU = environment.hasGPU ?? Boolean(browserNavigator.gpu);
+  const hasCache = environment.hasCache ?? ('caches' in globalThis);
+  const userAgent = environment.userAgent ?? browserNavigator.userAgent ?? '';
+  const platform = environment.platform ?? browserNavigator.platform ?? '';
+  const maxTouchPoints = environment.maxTouchPoints ?? browserNavigator.maxTouchPoints ?? 0;
+  const isIOS = /iPhone|iPad|iPod/i.test(userAgent)
+    || (/MacIntel/i.test(platform) && maxTouchPoints > 1);
+  const isSafari = /Safari\//i.test(userAgent)
+    && !/(Chrome|Chromium|CriOS|Edg|EdgiOS|OPR|FxiOS)\//i.test(userAgent);
+  const isChromium = /(Chrome|Chromium|CriOS|Edg|EdgiOS|OPR)\//i.test(userAgent);
+
+  if (!secureContext) {
+    return { supported: false, reason: 'WebGPU는 HTTPS 또는 localhost에서만 사용할 수 있습니다.' };
+  }
+  if (isIOS) {
+    return {
+      supported: false,
+      reason: 'iPhone과 iPad 브라우저에서는 현재 이 WebGPU AI 백엔드를 지원하지 않습니다. 데스크톱 또는 Android의 최신 Chrome·Edge에서 이용해 주세요.',
+    };
+  }
+  if (isSafari) {
+    return {
+      supported: false,
+      reason: 'Safari에서는 현재 이 WebGPU AI 백엔드를 지원하지 않습니다. 최신 Chrome 또는 Edge에서 이용해 주세요.',
+    };
+  }
+  if (!hasGPU) {
+    return { supported: false, reason: '이 브라우저에서는 WebGPU를 사용할 수 없습니다. 최신 Chrome 또는 Edge를 권장합니다.' };
+  }
+  if (!isChromium) {
+    return {
+      supported: false,
+      reason: '현재 On-Device AI는 WebGPU 백엔드가 검증된 최신 Chrome 또는 Edge에서 사용할 수 있습니다.',
+    };
+  }
+  if (!hasCache) {
+    return { supported: false, reason: '이 브라우저에서는 모델 캐시를 사용할 수 없습니다.' };
+  }
+  return { supported: true, reason: 'WebGPU와 브라우저 캐시를 사용할 수 있습니다.' };
+}
+
+export function friendlyAIError(error) {
+  const message = error?.message || String(error || '');
+  if (/no available backend|webgpuInit|webgpu.*backend|backend.*webgpu/i.test(message)) {
+    return new Error('이 브라우저의 WebGPU AI 백엔드를 초기화할 수 없습니다. 최신 Chrome 또는 Edge에서 다시 시도해 주세요.');
+  }
+  return error instanceof Error ? error : new Error(message || 'AI 모델을 불러오지 못했습니다.');
+}
+
 export function normalizeAIOutput(value, section) {
   const text = String(value || '');
   if (section !== 'meal') return text;
@@ -105,13 +157,10 @@ export function buildAIRequest(items, section, question = '') {
 export const localAI = {
   modelId: MODEL_ID,
   isSupported() {
-    return Boolean(window.isSecureContext && navigator.gpu && 'caches' in window);
+    return getLocalAISupport().supported;
   },
   supportReason() {
-    if (!window.isSecureContext) return 'WebGPU는 HTTPS 또는 localhost에서만 사용할 수 있습니다.';
-    if (!navigator.gpu) return '이 브라우저에서는 WebGPU를 사용할 수 없습니다. 최신 Chrome 또는 Edge를 권장합니다.';
-    if (!('caches' in window)) return '이 브라우저에서는 모델 캐시를 사용할 수 없습니다.';
-    return 'WebGPU와 브라우저 캐시를 사용할 수 있습니다.';
+    return getLocalAISupport().reason;
   },
   isStored() {
     return localStorage.getItem(STORAGE_KEY) === 'true';
@@ -168,7 +217,7 @@ export const localAI = {
     } catch (error) {
       model = null;
       processor = null;
-      throw error;
+      throw friendlyAIError(error);
     } finally {
       loadingPromise = null;
     }

@@ -14,6 +14,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo
 
 import collector as c
+from meal_utils import meal_identity, normalize_meal_corner, resolve_meal_date
 
 DB = Path(__file__).parent / "notices.db"
 SEOUL_TZ = ZoneInfo("Asia/Seoul")
@@ -54,6 +55,47 @@ CREATE TABLE IF NOT EXISTS runs (
 """
 
 
+def normalize_restaurant_records(conn: sqlite3.Connection) -> None:
+    """구형 수집 날짜 기반 식단 키를 제공일 기반 키로 합치고 코너명을 정규화한다."""
+    rows = conn.execute(
+        "SELECT rowid, * FROM notices WHERE board='restaurant'"
+    ).fetchall()
+    groups: dict[str, list[tuple[sqlite3.Row, str, str, str, str]]] = {}
+    for row in rows:
+        title = " ".join((row["title"] or "").split())
+        meal = row["meal"] or next(
+            (name for name in ("조식", "중식", "석식", "간식") if title.endswith(name)),
+            "",
+        )
+        day = row["day"] or (
+            title[:-len(meal)].strip() if meal and title.endswith(meal) else title
+        )
+        corner = normalize_meal_corner(row["corner"] or ("한식(식판)" if row["summary"] else ""))
+        served_on = resolve_meal_date(day, row["date"] or "")
+        identity = meal_identity(day, meal, corner, row["date"] or "")
+        groups.setdefault(identity, []).append((row, meal, day, corner, served_on))
+
+    for identity, records in groups.items():
+        winner = max(records, key=lambda record: (record[0]["last_seen"] or "", record[0]["key"]))
+        winner_row, meal, day, corner, served_on = winner
+        for row, _meal, _day, _corner, _served_on in records:
+            if row["rowid"] != winner_row["rowid"]:
+                conn.execute("DELETE FROM notices WHERE rowid=?", (row["rowid"],))
+        conn.execute(
+            """UPDATE notices
+               SET key=?, meal=?, day=?, corner=?, date=?
+               WHERE rowid=?""",
+            (
+                identity,
+                meal,
+                day,
+                corner,
+                served_on,
+                winner_row["rowid"],
+            ),
+        )
+
+
 def connect() -> sqlite3.Connection:
     conn = sqlite3.connect(DB)
     conn.row_factory = sqlite3.Row
@@ -75,6 +117,7 @@ def connect() -> sqlite3.Connection:
     }.items():
         if name not in run_columns:
             conn.execute(f"ALTER TABLE runs ADD COLUMN {name} {definition}")
+    normalize_restaurant_records(conn)
     conn.commit()
     return conn
 

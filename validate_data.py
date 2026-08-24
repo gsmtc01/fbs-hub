@@ -7,6 +7,8 @@ import re
 from pathlib import Path
 from urllib.parse import urlparse
 
+from meal_utils import meal_identity, normalize_meal_corner
+
 EXPECTED_BOARDS = (
     "univ", "coneng", "fbs", "recruit", "calendar", "restaurant",
     "today", "newsletter", "people", "focus",
@@ -34,6 +36,7 @@ def validate(path: Path) -> list[str]:
 
     ids: set[str] = set()
     boards: set[str] = set()
+    meal_keys: set[str] = set()
     for index, item in enumerate(items):
         prefix = f"items[{index}]"
         boards.add(item.get("board", ""))
@@ -61,6 +64,15 @@ def validate(path: Path) -> list[str]:
                 errors.append(f"{prefix}: 구조화된 식단 필드가 비어 있습니다.")
             if not isinstance(item.get("menu"), list) or not item.get("menu"):
                 errors.append(f"{prefix}: 식단 메뉴 배열이 비어 있습니다.")
+            corner = item.get("corner", "")
+            if corner != normalize_meal_corner(corner):
+                errors.append(f"{prefix}: 구형 식단 코너명이 남아 있습니다: {corner}")
+            meal_key = meal_identity(
+                item.get("day", ""), item.get("meal", ""), corner, item.get("date", "")
+            )
+            if meal_key in meal_keys:
+                errors.append(f"{prefix}: 같은 제공일·식사·코너의 식단이 중복되었습니다: {meal_key}")
+            meal_keys.add(meal_key)
 
     missing = set(EXPECTED_BOARDS) - boards
     if missing:
