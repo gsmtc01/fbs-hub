@@ -1,4 +1,4 @@
-import { localAI } from './local-llm.js?v=20260825-8';
+import { localAI } from './local-llm.js?v=20260825-9';
 
 const CONFIG = {
   dataUrl: './data/notices.json',
@@ -74,6 +74,7 @@ const state = {
   readItems: new Set(loadStoredArray('fbs.readItems')),
   mobileAIExpanded: localStorage.getItem('fbs.mobileAIExpanded') === 'true',
   aiText: '', aiBusy: false, aiStopping: false, aiError: '', aiSpeaking: false, aiQuestion: '', aiDraft: '', aiRequestId: 0, showPastCalendar: false,
+  mealWeek: '',
 };
 
 let aiStreamFrame = 0;
@@ -117,6 +118,11 @@ function mealDayDate(day = '', reference = seoulDate()) {
     .map((candidate) => `${candidate}-${month.padStart(2, '0')}-${date.padStart(2, '0')}`)
     .filter((candidate) => !Number.isNaN(Date.parse(`${candidate}T00:00:00Z`)))
     .sort((a, b) => Math.abs(Date.parse(`${a}T00:00:00Z`) - referenceMs) - Math.abs(Date.parse(`${b}T00:00:00Z`) - referenceMs))[0] || '';
+}
+function mondayOfWeek(iso) {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(iso)) return '';
+  const weekday = new Date(`${iso}T00:00:00Z`).getUTCDay();
+  return shiftISODate(iso, -(weekday === 0 ? 6 : weekday - 1));
 }
 function formatDate(iso = '') { return /^\d{4}-\d{2}-\d{2}$/.test(iso) ? iso.replaceAll('-', '.') : iso; }
 function formatViews(value) { return new Intl.NumberFormat('ko-KR').format(Number(value) || 0); }
@@ -301,6 +307,12 @@ function sectionItems({ includePersonal = true } = {}) {
     if (state.personalView === 'new') items = items.filter(isNewItem);
   }
   if (state.section === 'calendar') return items.sort((a, b) => a.date.localeCompare(b.date));
+  if (state.section === 'meal') {
+    const mealOrder = { '조식': 0, '중식': 1, '석식': 2, '간식': 3 };
+    return [...items].sort((a, b) => a.date.localeCompare(b.date)
+      || (mealOrder[a.meal] ?? 9) - (mealOrder[b.meal] ?? 9)
+      || String(a.corner || '').localeCompare(String(b.corner || ''), 'ko'));
+  }
   return items.sort((a, b) => Number(b.pinned) - Number(a.pinned) || b.date.localeCompare(a.date));
 }
 
@@ -387,11 +399,25 @@ function calendarMarkup(items) {
 function mealMarkup(items) {
   if (!items.length) return '';
   const today = seoulDate();
+  const weeks = [...new Set(items.map((item) => mondayOfWeek(item.date)).filter(Boolean))].sort().reverse();
+  const currentWeek = mondayOfWeek(today);
+  if (!weeks.includes(state.mealWeek)) {
+    state.mealWeek = weeks.includes(currentWeek) ? currentWeek : weeks[0];
+  }
+  const selectedItems = items.filter((item) => mondayOfWeek(item.date) === state.mealWeek);
   const dayLabel = (item) => item.day || item.title.replace(new RegExp(` ${item.meal || '중식'}$`), '');
-  const groups = items.reduce((map, item) => map.set(dayLabel(item), [...(map.get(dayLabel(item)) || []), item]), new Map());
-  return `<div class="meal-intro"><strong>미래백년관 정오아카데미</strong><span>중식 11:00~13:30 / 한식과 푸드코트 코너별 주간 식단</span></div>${[...groups.entries()].map(([day, rows]) => {
-    const isToday = mealDayDate(day, today) === today;
-    return `<a class="meal-day${isToday ? ' today' : ''}"${isToday ? ' aria-current="date"' : ''} href="${escapeHTML(safeUrl(rows[0].url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="meal-date">${isToday ? '<small class="meal-today-label">오늘</small>' : ''}${highlight(day)}</span><span class="meal-corners">${rows.map((item) => `<span class="meal-corner-row"><strong>${escapeHTML(item.corner || (rows.length > 1 ? item.meal || '코너' : '한식'))}</strong><span>${highlight(Array.isArray(item.menu) && item.menu.length ? item.menu.join(' / ') : item.summary)}</span></span>`).join('')}</span></a>`;
+  const groups = selectedItems.reduce((map, item) => map.set(dayLabel(item), [...(map.get(dayLabel(item)) || []), item]), new Map());
+  const weekOptions = weeks.map((week) => {
+    const label = `${formatDate(week)} ~ ${formatDate(shiftISODate(week, 4))}`;
+    return `<option value="${week}"${week === state.mealWeek ? ' selected' : ''}>${label}</option>`;
+  }).join('');
+  return `<div class="meal-intro"><div class="meal-intro-copy"><strong>미래백년관 정오아카데미</strong><span>중식 11:00~13:30 / 코너별 주간 식단</span><small class="meal-program-note">조식은 학기 중 ‘천원의 아침밥’ 사업 운영 기간에만 표시됩니다.</small></div><label class="meal-week-picker"><span>조회 주간</span><select data-meal-week aria-label="학식 조회 주간">${weekOptions}</select></label></div>${[...groups.entries()].map(([day, rows]) => {
+    const isToday = rows.some((item) => item.date === today) || mealDayDate(day, today) === today;
+    return `<a class="meal-day${isToday ? ' today' : ''}"${isToday ? ' aria-current="date"' : ''} href="${escapeHTML(safeUrl(rows[0].url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="meal-date">${isToday ? '<small class="meal-today-label">오늘</small>' : ''}${highlight(day)}</span><span class="meal-corners">${rows.map((item) => {
+      const corner = item.corner || (rows.length > 1 ? '코너' : '한식');
+      const label = item.meal ? `${item.meal} · ${corner}` : corner;
+      return `<span class="meal-corner-row"><strong>${escapeHTML(label)}</strong><span>${highlight(Array.isArray(item.menu) && item.menu.length ? item.menu.join(' / ') : item.summary)}</span></span>`;
+    }).join('')}</span></a>`;
   }).join('')}`;
 }
 
@@ -699,13 +725,15 @@ function toggleFavorite(key) {
   showToast(removing ? '즐겨찾기에서 제거했습니다.' : '즐겨찾기에 추가했습니다.');
 }
 function updateModelSettings() {
-  const supported = localAI.isSupported();
+  const support = localAI.supportStatus();
+  const { supported, experimental } = support;
   const stored = localAI.isStored();
   const badge = $('#modelStateBadge');
-  badge.textContent = stored ? '다운로드됨' : supported ? '다운로드 안 됨' : '사용 불가';
-  badge.className = `status-badge${stored ? ' ready' : !supported ? ' error' : ''}`;
-  $('#webgpuNotice').textContent = localAI.supportReason();
-  $('#webgpuNotice').classList.toggle('error', !supported);
+  badge.textContent = stored ? '다운로드됨' : !supported ? '사용 불가' : experimental ? '실험적 지원' : '다운로드 안 됨';
+  badge.className = `status-badge${stored ? ' ready' : !supported ? ' error' : experimental ? ' warning' : ''}`;
+  const notice = $('#webgpuNotice');
+  notice.textContent = support.reason;
+  notice.className = `notice-box${!supported ? ' error' : experimental ? ' warning' : ''}`;
   $('#downloadModelButton').hidden = stored;
   $('#downloadModelButton').disabled = !supported;
   $('#deleteModelButton').hidden = !stored;
@@ -733,6 +761,7 @@ async function downloadModel() {
     updateModelSettings(); renderAI(); showToast('AI 모델을 로컬에 저장했습니다.');
   } catch (error) {
     $('#webgpuNotice').textContent = `다운로드 실패: ${error.message || error}`;
+    $('#webgpuNotice').classList.remove('warning');
     $('#webgpuNotice').classList.add('error');
   } finally {
     button.disabled = !localAI.isSupported(); button.textContent = 'On-Device AI 모델 다운로드';
@@ -902,6 +931,11 @@ document.addEventListener('submit', (event) => {
 });
 document.addEventListener('input', (event) => {
   if (event.target.matches('[data-ai-question-input]')) state.aiDraft = event.target.value;
+});
+document.addEventListener('change', (event) => {
+  if (!event.target.matches('[data-meal-week]')) return;
+  state.mealWeek = event.target.value;
+  renderList();
 });
 document.addEventListener('auxclick', (event) => {
   const noticeLink = event.target.closest('[data-notice-link]');

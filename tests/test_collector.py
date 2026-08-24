@@ -89,6 +89,14 @@ class CollectorRegressionTest(unittest.TestCase):
             second = collector.list_notices("restaurant", date="2026-08-25")
         self.assertEqual({row["id"] for row in first}, {row["id"] for row in second})
 
+    def test_restaurant_can_collect_only_breakfast(self):
+        with patch("collector.fetch", return_value=MEAL_HTML) as fetch_mock:
+            rows = collector.list_notices(
+                "restaurant", date="2026-06-01", meal_categories=["B"])
+        self.assertEqual(len(rows), 2)
+        self.assertTrue(all(row["meal"] == "조식" for row in rows))
+        self.assertEqual(fetch_mock.call_count, 1)
+
     def test_three_standard_webzines(self):
         for key in ("today", "newsletter"):
             with self.subTest(board=key), patch("collector.fetch", return_value=WEBZINE_HTML):

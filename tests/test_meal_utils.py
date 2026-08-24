@@ -20,6 +20,9 @@ class MealNormalizationTest(unittest.TestCase):
         food_court = meal_identity("월(08.24)", "중식", "푸드코트", "2026-08-25")
         self.assertNotEqual(korean, food_court)
 
+    def test_breakfast_program_corner_adds_readable_spacing(self):
+        self.assertEqual(normalize_meal_corner("천원의아침밥"), "천원의 아침밥")
+
 
 if __name__ == "__main__":
     unittest.main()

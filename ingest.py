@@ -122,9 +122,21 @@ def connect() -> sqlite3.Connection:
     return conn
 
 
-def ingest_board(conn: sqlite3.Connection, key: str, limit: int = 30) -> tuple[int, int]:
+def ingest_board(
+        conn: sqlite3.Connection, key: str, limit: int = 30,
+        meal_dates: list[str] | None = None,
+        meal_categories: list[str] | None = None) -> tuple[int, int]:
     board = c.BOARDS[key]
-    items = c.list_notices(key, limit=limit)
+    if key == "restaurant" and meal_dates:
+        collected = []
+        for meal_date in meal_dates:
+            collected.extend(c.list_notices(
+                key, date=meal_date, meal_categories=meal_categories))
+        items = list({item["id"]: item for item in collected}.values())
+    elif key == "restaurant":
+        items = c.list_notices(key, meal_categories=meal_categories)
+    else:
+        items = c.list_notices(key, limit=limit)
     now = seoul_timestamp()
     added = 0
 
@@ -174,7 +186,15 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--limit", type=int, default=30, help="게시판별 수집 건수")
     ap.add_argument("--board", help="특정 게시판만")
+    ap.add_argument(
+        "--meal-date", action="append", default=[], metavar="YYYY-MM-DD",
+        help="학식 수집 기준일. 과거 주간 보충 시 여러 번 지정할 수 있음")
+    ap.add_argument(
+        "--meal-category", action="append", choices=tuple(c.MEALS), default=[],
+        help="학식 구분 코드. B 조식, L 중식, D 석식, S 간식")
     args = ap.parse_args()
+    if (args.meal_date or args.meal_category) and args.board != "restaurant":
+        ap.error("--meal-date와 --meal-category는 --board restaurant와 함께 사용해야 합니다")
 
     conn = connect()
     keys = [args.board] if args.board else c.collectable()
@@ -183,7 +203,10 @@ def main():
     for k in keys:
         started = time.monotonic()
         try:
-            f, a = ingest_board(conn, k, args.limit)
+            f, a = ingest_board(
+                conn, k, args.limit,
+                meal_dates=args.meal_date or None,
+                meal_categories=args.meal_category or None)
             record_run(conn, k, f, a, "ok", "", int((time.monotonic() - started) * 1000))
             print(f"  {c.BOARDS[k].name:22} 수집 {f:3}건 · 신규 {a:3}건")
             tot_f, tot_a = tot_f + f, tot_a + a

@@ -45,7 +45,7 @@ test('학식 분류에 이미 있는 이모지는 중복하지 않는다', () =>
   assert.equal(output, '- 🥘 **볶음·조림류**: 두부조림');
 });
 
-test('navigator.gpu가 있어도 iPhone WebGPU AI 백엔드는 지원하지 않는다고 판정한다', () => {
+test('iOS 26에서 WebGPU와 캐시가 감지되면 실험적 지원으로 판정한다', () => {
   const support = getLocalAISupport({
     secureContext: true,
     hasGPU: true,
@@ -54,8 +54,35 @@ test('navigator.gpu가 있어도 iPhone WebGPU AI 백엔드는 지원하지 않�
     platform: 'iPhone',
     maxTouchPoints: 5,
   });
+  assert.equal(support.supported, true);
+  assert.equal(support.experimental, true);
+  assert.match(support.reason, /실험적으로/);
+});
+
+test('Chrome iOS도 WebGPU가 감지되면 실험적 지원으로 판정한다', () => {
+  const support = getLocalAISupport({
+    secureContext: true,
+    hasGPU: true,
+    hasCache: true,
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 26_0 like Mac OS X) AppleWebKit/605.1.15 CriOS/140.0.0.0 Mobile/15E148 Safari/604.1',
+    platform: 'iPhone',
+    maxTouchPoints: 5,
+  });
+  assert.equal(support.supported, true);
+  assert.equal(support.experimental, true);
+});
+
+test('iOS에서 WebGPU가 감지되지 않으면 사용할 수 없다고 판정한다', () => {
+  const support = getLocalAISupport({
+    secureContext: true,
+    hasGPU: false,
+    hasCache: true,
+    userAgent: 'Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 Version/18.0 Mobile/15E148 Safari/604.1',
+    platform: 'iPhone',
+    maxTouchPoints: 5,
+  });
   assert.equal(support.supported, false);
-  assert.match(support.reason, /iPhone과 iPad/);
+  assert.match(support.reason, /iOS 26/);
 });
 
 test('macOS Chrome의 WebGPU와 캐시는 지원 대상으로 판정한다', () => {
@@ -68,6 +95,7 @@ test('macOS Chrome의 WebGPU와 캐시는 지원 대상으로 판정한다', () 
     maxTouchPoints: 0,
   });
   assert.equal(support.supported, true);
+  assert.equal(support.experimental, false);
 });
 
 test('WebGPU 백엔드 초기화 오류를 이용자 안내 문구로 변환한다', () => {

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-08-25T05:40:19+09:00",
+  "generatedAt": "2026-08-25T06:59:13+09:00",
   "summaryLimit": 150,
   "notice": "본문과 담당자 실명은 포함하지 않습니다. 링크는 항상 원문으로 연결됩니다.",
   "sources": [
@@ -47,8 +47,8 @@
     {
       "key": "restaurant",
       "label": "학식",
-      "itemCount": 5,
-      "updatedAt": "2026-08-25T05:40:14+09:00",
+      "itemCount": 15,
+      "updatedAt": "2026-08-25T06:59:13+09:00",
       "status": "ok",
       "error": ""
     },
@@ -2373,6 +2373,72 @@
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
     },
     {
+      "id": "restaurant:2026-06-12-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "금(06.12) 조식",
+      "summary": "운영없음",
+      "writer": "",
+      "date": "2026-06-12",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-08",
+      "meal": "조식",
+      "day": "금(06.12)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "운영없음"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-11-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "목(06.11) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:플라워떡갈비마요덮밥+초코우유 / 1.8:30~ 소진 시 까지 / 2.9:30~ 소진 시 까지",
+      "writer": "",
+      "date": "2026-06-11",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-08",
+      "meal": "조식",
+      "day": "목(06.11)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:플라워떡갈비마요덮밥+초코우유",
+        "1.8:30~ 소진 시 까지",
+        "2.9:30~ 소진 시 까지"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-10-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "수(06.10) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:닭고기야채죽+미니핫바+초코우유 / 1.8:30~ 소진 시 까지 / 2.9:30~ 소진 시 까지",
+      "writer": "",
+      "date": "2026-06-10",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-08",
+      "meal": "조식",
+      "day": "수(06.10)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:닭고기야채죽+미니핫바+초코우유",
+        "1.8:30~ 소진 시 까지",
+        "2.9:30~ 소진 시 까지"
+      ]
+    },
+    {
       "id": "calendar:762391",
       "board": "calendar",
       "boardLabel": "학사일정 및 전공일정",
@@ -2401,6 +2467,138 @@
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
     },
     {
+      "id": "restaurant:2026-06-09-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "화(06.09) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:비프하이라이스+초코우유 / 1.8:30~ 소진 시 까지 / 2.9:30~ 소진 시 까지",
+      "writer": "",
+      "date": "2026-06-09",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-08",
+      "meal": "조식",
+      "day": "화(06.09)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:비프하이라이스+초코우유",
+        "1.8:30~ 소진 시 까지",
+        "2.9:30~ 소진 시 까지"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-08-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "월(06.08) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:바지락순두부찌개+3찬+초코우유 / 1.8:30~ 소진 시 까지 / 2.9:30~ 소진 시 까지",
+      "writer": "",
+      "date": "2026-06-08",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-08",
+      "meal": "조식",
+      "day": "월(06.08)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:바지락순두부찌개+3찬+초코우유",
+        "1.8:30~ 소진 시 까지",
+        "2.9:30~ 소진 시 까지"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-05-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "금(06.05) 조식",
+      "summary": "운영없음",
+      "writer": "",
+      "date": "2026-06-05",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-01",
+      "meal": "조식",
+      "day": "금(06.05)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "운영없음"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-04-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "목(06.04) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:바몬드카레라이스+초코우유 / 1.8:30~소진 시 까지 / 2.9:30~소진 시 까지",
+      "writer": "",
+      "date": "2026-06-04",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-01",
+      "meal": "조식",
+      "day": "목(06.04)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:바몬드카레라이스+초코우유",
+        "1.8:30~소진 시 까지",
+        "2.9:30~소진 시 까지"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-03-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "수(06.03) 조식",
+      "summary": "2026 지방선거",
+      "writer": "",
+      "date": "2026-06-03",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-01",
+      "meal": "조식",
+      "day": "수(06.03)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "2026 지방선거"
+      ]
+    },
+    {
+      "id": "restaurant:2026-06-02-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "화(06.02) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:소고기야채볶음밥+핫도그+초코우유 / 1.8:30~소진 시 까지 / 2.9:30~소진 시 까지",
+      "writer": "",
+      "date": "2026-06-02",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-01",
+      "meal": "조식",
+      "day": "화(06.02)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:소고기야채볶음밥+핫도그+초코우유",
+        "1.8:30~소진 시 까지",
+        "2.9:30~소진 시 까지"
+      ]
+    },
+    {
       "id": "calendar:762390",
       "board": "calendar",
       "boardLabel": "학사일정 및 전공일정",
@@ -2413,6 +2611,29 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
+    },
+    {
+      "id": "restaurant:2026-06-01-B-천원의-아침밥",
+      "board": "restaurant",
+      "boardLabel": "학식",
+      "title": "월(06.01) 조식",
+      "summary": "1.간편식:떡국컵+반숙란+음료 / 2.식사류:미니밥+김치유부잔치국수+갈비만두+초코우유 / 1.8:30~소진 시 까지 / 2.9:30~소진 시 까지",
+      "writer": "",
+      "date": "2026-06-01",
+      "views": 0,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://www.smu.ac.kr/kor/life/restaurantView.do?mode=menuList&srMealCategory=B&srDt=2026-06-01",
+      "meal": "조식",
+      "day": "월(06.01)",
+      "corner": "천원의 아침밥",
+      "menu": [
+        "1.간편식:떡국컵+반숙란+음료",
+        "2.식사류:미니밥+김치유부잔치국수+갈비만두+초코우유",
+        "1.8:30~소진 시 까지",
+        "2.9:30~소진 시 까지"
+      ]
     },
     {
       "id": "fbs:765958",

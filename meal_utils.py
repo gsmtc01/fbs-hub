@@ -6,6 +6,7 @@ from datetime import date
 
 CORNER_ALIASES = {
     "한식": "한식(식판)",
+    "천원의아침밥": "천원의 아침밥",
 }
 MEAL_CODES = {
     "조식": "B",

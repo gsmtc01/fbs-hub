@@ -56,33 +56,34 @@ export function getLocalAISupport(environment = {}) {
   const isChromium = /(Chrome|Chromium|CriOS|Edg|EdgiOS|OPR)\//i.test(userAgent);
 
   if (!secureContext) {
-    return { supported: false, reason: 'WebGPU는 HTTPS 또는 localhost에서만 사용할 수 있습니다.' };
-  }
-  if (isIOS) {
-    return {
-      supported: false,
-      reason: 'iPhone과 iPad 브라우저에서는 현재 이 WebGPU AI 백엔드를 지원하지 않습니다. 데스크톱 또는 Android의 최신 Chrome·Edge에서 이용해 주세요.',
-    };
-  }
-  if (isSafari) {
-    return {
-      supported: false,
-      reason: 'Safari에서는 현재 이 WebGPU AI 백엔드를 지원하지 않습니다. 최신 Chrome 또는 Edge에서 이용해 주세요.',
-    };
+    return { supported: false, experimental: false, reason: 'WebGPU는 HTTPS 또는 localhost에서만 사용할 수 있습니다.' };
   }
   if (!hasGPU) {
-    return { supported: false, reason: '이 브라우저에서는 WebGPU를 사용할 수 없습니다. 최신 Chrome 또는 Edge를 권장합니다.' };
+    const reason = isIOS
+      ? '이 iPhone 또는 iPad 브라우저에서 WebGPU를 감지하지 못했습니다. iOS 26 이상으로 업데이트하거나 데스크톱·Android의 최신 Chrome 또는 Edge를 이용해 주세요.'
+      : isSafari
+        ? '이 Safari에서 WebGPU를 감지하지 못했습니다. Safari 26 이상으로 업데이트하거나 최신 Chrome 또는 Edge를 이용해 주세요.'
+        : '이 브라우저에서는 WebGPU를 사용할 수 없습니다. 최신 Chrome 또는 Edge를 권장합니다.';
+    return { supported: false, experimental: false, reason };
+  }
+  if (!hasCache) {
+    return { supported: false, experimental: false, reason: '이 브라우저에서는 모델 캐시를 사용할 수 없습니다.' };
+  }
+  if (isIOS || isSafari) {
+    return {
+      supported: true,
+      experimental: true,
+      reason: 'WebGPU와 브라우저 캐시를 감지했습니다. 다만 현재 ONNX Runtime Web 공식 지원표에서 Safari와 iOS의 WebGPU 실행은 지원 대상으로 확인되지 않아 실험적으로 제공합니다. 모델 초기화가 실패할 수 있습니다.',
+    };
   }
   if (!isChromium) {
     return {
       supported: false,
+      experimental: false,
       reason: '현재 On-Device AI는 WebGPU 백엔드가 검증된 최신 Chrome 또는 Edge에서 사용할 수 있습니다.',
     };
   }
-  if (!hasCache) {
-    return { supported: false, reason: '이 브라우저에서는 모델 캐시를 사용할 수 없습니다.' };
-  }
-  return { supported: true, reason: 'WebGPU와 브라우저 캐시를 사용할 수 있습니다.' };
+  return { supported: true, experimental: false, reason: 'WebGPU와 브라우저 캐시를 사용할 수 있습니다.' };
 }
 
 export function friendlyAIError(error) {
@@ -156,11 +157,14 @@ export function buildAIRequest(items, section, question = '') {
 
 export const localAI = {
   modelId: MODEL_ID,
+  supportStatus() {
+    return getLocalAISupport();
+  },
   isSupported() {
-    return getLocalAISupport().supported;
+    return this.supportStatus().supported;
   },
   supportReason() {
-    return getLocalAISupport().reason;
+    return this.supportStatus().reason;
   },
   isStored() {
     return localStorage.getItem(STORAGE_KEY) === 'true';

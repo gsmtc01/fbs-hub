@@ -335,11 +335,17 @@ def list_calendar(board: Board, year: int | None = None, **_) -> list[dict]:
 MEALS = {"B": "조식", "L": "중식", "D": "석식", "S": "간식"}
 
 
-def list_restaurant(board: Board, date: str | None = None, **_) -> list[dict]:
+def list_restaurant(
+        board: Board, date: str | None = None,
+        meal_categories: list[str] | tuple[str, ...] | None = None, **_) -> list[dict]:
     """주간 식단표. 게시판이 아니라 요일 x 코너 표라 레코드 모양이 다르다."""
     date = date or datetime.now(SEOUL_TZ).date().isoformat()
     out = []
-    for code, meal in MEALS.items():
+    category_codes = meal_categories or tuple(MEALS)
+    for code in category_codes:
+        if code not in MEALS:
+            continue
+        meal = MEALS[code]
         page_url = f"{board.url}?" + urllib.parse.urlencode(
             {"mode": "menuList", "srMealCategory": code, "srDt": date})
         page = fetch(page_url)
