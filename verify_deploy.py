@@ -20,6 +20,7 @@ REQUIRED_FILES = {
     "data/notices.json",
     "index.html",
     "local-llm.js",
+    "meal-display.js",
     "manifest.webmanifest",
     "pages/copyright.html",
     "pages/licenses.html",

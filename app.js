@@ -1,4 +1,5 @@
 import { localAI } from './local-llm.js?v=20260825-9';
+import { mealMenuText } from './meal-display.js?v=20260825-1';
 
 const CONFIG = {
   dataUrl: './data/notices.json',
@@ -411,12 +412,12 @@ function mealMarkup(items) {
     const label = `${formatDate(week)} ~ ${formatDate(shiftISODate(week, 4))}`;
     return `<option value="${week}"${week === state.mealWeek ? ' selected' : ''}>${label}</option>`;
   }).join('');
-  return `<div class="meal-intro"><div class="meal-intro-copy"><strong>미래백년관 정오아카데미</strong><span>중식 11:00~13:30 / 코너별 주간 식단</span><small class="meal-program-note">조식은 학기 중 ‘천원의 아침밥’ 사업 운영 기간에만 표시됩니다.</small></div><label class="meal-week-picker"><span>조회 주간</span><select data-meal-week aria-label="학식 조회 주간">${weekOptions}</select></label></div>${[...groups.entries()].map(([day, rows]) => {
+  return `<div class="meal-intro"><div class="meal-intro-copy"><strong>미래백년관 정오아카데미</strong><span>조식 간편식 08:30 · 식사류 09:30 (소진 시까지) / 중식 11:00~13:30 · 코너별 주간 식단</span><small class="meal-program-note">조식은 학기 중 ‘천원의 아침밥’ 사업 운영 기간에만 표시됩니다.</small></div><label class="meal-week-picker"><span>조회 주간</span><select data-meal-week aria-label="학식 조회 주간">${weekOptions}</select></label></div>${[...groups.entries()].map(([day, rows]) => {
     const isToday = rows.some((item) => item.date === today) || mealDayDate(day, today) === today;
     return `<a class="meal-day${isToday ? ' today' : ''}"${isToday ? ' aria-current="date"' : ''} href="${escapeHTML(safeUrl(rows[0].url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="meal-date">${isToday ? '<small class="meal-today-label">오늘</small>' : ''}${highlight(day)}</span><span class="meal-corners">${rows.map((item) => {
       const corner = item.corner || (rows.length > 1 ? '코너' : '한식');
       const label = item.meal ? `${item.meal} · ${corner}` : corner;
-      return `<span class="meal-corner-row"><strong>${escapeHTML(label)}</strong><span>${highlight(Array.isArray(item.menu) && item.menu.length ? item.menu.join(' / ') : item.summary)}</span></span>`;
+      return `<span class="meal-corner-row"><strong>${escapeHTML(label)}</strong><span>${highlight(mealMenuText(item))}</span></span>`;
     }).join('')}</span></a>`;
   }).join('')}`;
 }

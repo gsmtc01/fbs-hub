@@ -7,6 +7,7 @@ import {
   getLocalAISupport,
   normalizeAIOutput,
 } from '../local-llm.js';
+import { mealMenuText } from '../meal-display.js';
 
 const items = [{
   title: '장학금 신청 안내', date: '2026-08-23', summary: '신청 기간과 자격을 원문에서 확인하세요.',
@@ -43,6 +44,28 @@ test('학식의 밑반찬에 이모지와 굵은 서식을 보정한다', () => 
 test('학식 분류에 이미 있는 이모지는 중복하지 않는다', () => {
   const output = normalizeAIOutput('- 🥘 볶음·조림류: 두부조림', 'meal');
   assert.equal(output, '- 🥘 **볶음·조림류**: 두부조림');
+});
+
+test('조식 표시에서 번호와 반복 시간 항목을 제거한다', () => {
+  const output = mealMenuText({
+    meal: '조식',
+    menu: [
+      '1.간편식:떡국컵+반숙란+음료',
+      '2.식사류:바지락순두부찌개+3찬+초코우유',
+      '1.8:30~소진 시 까지',
+      '2.9:30~소진 시 까지',
+    ],
+  });
+  assert.equal(output, '간편식: 떡국컵+반숙란+음료 / 식사류: 바지락순두부찌개+3찬+초코우유');
+});
+
+test('조식의 운영 안내는 그대로 보존한다', () => {
+  assert.equal(mealMenuText({ meal: '조식', menu: ['운영없음'] }), '운영없음');
+  assert.equal(mealMenuText({ meal: '조식', menu: ['2026 지방선거'] }), '2026 지방선거');
+});
+
+test('중식 메뉴 표시는 변경하지 않는다', () => {
+  assert.equal(mealMenuText({ meal: '중식', menu: ['잡곡밥', '된장찌개'] }), '잡곡밥 / 된장찌개');
 });
 
 test('iOS 26에서 WebGPU와 캐시가 감지되면 실험적 지원으로 판정한다', () => {
