@@ -296,7 +296,11 @@ mark.important-mark { color: var(--gold); background: var(--badge-gold); font-we
 .calendar-empty { min-height: 180px; }
 .meal-intro { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 24px; border-bottom: 1px solid var(--line-soft); background: var(--surface-alt); }
 .meal-intro-copy { min-width: 0; }
-.meal-intro-copy > strong { font-size: 13px; }.meal-intro-copy > span { margin-left: 7px; color: var(--muted); font-size: 11.5px; }
+.meal-intro-copy > strong { font-size: 13px; }
+.meal-hours { display: grid; gap: 2px; margin-top: 5px; color: var(--muted); font-size: 11.5px; }
+.meal-hours-row { min-width: 0; display: flex; align-items: baseline; gap: 7px; }
+.meal-hours-row b { min-width: 28px; color: var(--ink); font-weight: 650; }
+.meal-hours-row > span { min-width: 0; }
 .meal-program-note { display: block; margin-top: 5px; color: var(--muted); font-size: 10.5px; line-height: 1.45; }
 .meal-week-picker { flex: none; display: flex; align-items: center; gap: 7px; color: var(--muted); font-size: 10.5px; }
 .meal-week-picker select { min-height: 32px; padding: 4px 8px; border: 1px solid var(--line); border-radius: 4px; color: var(--ink); background: var(--surface); font-size: 11.5px; }
@@ -447,7 +451,7 @@ body { font-size: 16px; line-height: 1.5; }
 .calendar-item { min-height: 48px; }.calendar-item:hover { background: var(--hover); }.calendar-item.nearest:hover { background: var(--hover-strong); }
 .calendar-date { font-size: 13px; }.calendar-item .calendar-title { font-size: 14.5px; }.nearest-label { background: var(--action); color: var(--action-text); font-size: 11px; }
 .past-calendar-head strong, .past-calendar-toggle { font-size: 13.5px; }.past-calendar-head button { min-height: 32px; font-size: 12px; }
-.meal-intro-copy > strong { font-size: 14px; }.meal-intro-copy > span { font-size: 12.5px; }
+.meal-intro-copy > strong { font-size: 14px; }.meal-hours { font-size: 12.5px; }
 .meal-program-note, .meal-week-picker { font-size: 12px; }
 .meal-week-picker select { min-height: 36px; font-size: 12.5px; }
 .meal-day { grid-template-columns: 94px 1fr; }
@@ -537,7 +541,7 @@ mark { background: var(--mark); }
   .ai-card.mobile-collapsed { padding-bottom: 12px; }
   .workspace:has(.notice-list:not(:empty)) + .side-rail { position: static; }
   .calendar-overview { display: block; padding: 12px 18px; }.calendar-overview span { display: block; margin-top: 3px; }.calendar-month { padding: 10px 18px; }.calendar-item { display: block; padding: 11px 18px; }.calendar-date { color: var(--blue); }.calendar-item .tag { margin-left: 7px; }.calendar-item .calendar-title { display: block; margin-top: 6px; }.nearest-label { margin-right: 6px; }.past-calendar-head, .past-calendar-toggle { padding-right: 18px; padding-left: 18px; }
-  .meal-intro { display: block; padding: 13px 18px; }.meal-intro-copy > span { display: block; margin: 4px 0 0; }.meal-week-picker { margin-top: 11px; }.meal-week-picker select { min-width: 0; max-width: 100%; }.meal-day { display: block; padding: 13px 18px; }.meal-date { display: block; padding: 0 0 8px; border: 0; }.meal-corners { display: block; padding: 0; }.meal-corner-row { gap: 8px; padding: 7px 0; font-size: 13.5px; }
+  .meal-intro { display: block; padding: 13px 18px; }.meal-hours-row { align-items: flex-start; }.meal-hours-row > span { flex: 1; }.meal-week-picker { margin-top: 11px; }.meal-week-picker select { min-width: 0; max-width: 100%; }.meal-day { display: block; padding: 13px 18px; }.meal-date { display: block; padding: 0 0 8px; border: 0; }.meal-corners { display: block; padding: 0; }.meal-corner-row { gap: 8px; padding: 7px 0; font-size: 13.5px; }
   .zine-item { grid-template-columns: 74px 1fr; gap: 12px; }.zine-thumb { width: 74px; height: 52px; }
   .site-footer { width: 100%; margin: 24px 0 0; display: block; padding: 24px 18px calc(28px + env(safe-area-inset-bottom)); border-top: 1px solid var(--line); background: var(--surface-alt); }
   .site-footer p { max-width: none; margin-top: 10px; font-size: 13px; line-height: 1.65; }
