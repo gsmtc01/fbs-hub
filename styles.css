@@ -386,7 +386,7 @@ mark.important-mark { color: var(--gold); background: var(--badge-gold); font-we
 .on-device-facts div:last-child { border-bottom: 0; }
 .on-device-facts dt { color: var(--ink); font-size: 13px; font-weight: 650; }
 .on-device-facts dd { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.65; overflow-wrap: anywhere; }
-.toast { position: fixed; z-index: 100; left: 50%; bottom: 24px; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 10px 14px; border-radius: 4px; color: #fff; background: rgba(34,39,42,.94); box-shadow: 0 5px 20px rgba(0,0,0,.18); font-size: 11.5px; opacity: 0; pointer-events: none; transition: .2s ease; }.toast.show { transform: translate(-50%,0); opacity: 1; }
+.toast { position: fixed; z-index: 100; left: 50%; bottom: 24px; margin: 0; transform: translate(-50%, 20px); max-width: calc(100% - 32px); padding: 10px 14px; border: 0; border-radius: 4px; color: #fff; background: rgba(34,39,42,.94); box-shadow: 0 5px 20px rgba(0,0,0,.18); font-size: 11.5px; opacity: 0; pointer-events: none; transition: .2s ease; }.toast[popover] { inset: auto auto 24px 50%; }.toast.show { transform: translate(-50%,0); opacity: 1; }
 .noscript { position: fixed; right: 12px; bottom: 12px; padding: 12px; color: #fff; background: #8a3426; }
 
 .tab-chip span, .pin-toggle span, .notice-meta, .dday, .upcoming-item small, .calendar-month, .calendar-date, .past-calendar-toggle span, .model-facts dd, .download-progress small { font-variant-numeric: tabular-nums lining-nums; }

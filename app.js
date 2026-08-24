@@ -134,11 +134,27 @@ function formatBytes(value) {
   return `${(value / (1024 ** index)).toFixed(index > 1 ? 1 : 0)} ${units[index]}`;
 }
 function currentSection() { return SECTIONS.find((x) => x.id === state.section); }
+function closeToast() {
+  els.toast.classList.remove('show');
+  clearTimeout(showToast.closeTimer);
+  showToast.closeTimer = setTimeout(() => {
+    if (typeof els.toast.hidePopover !== 'function') return;
+    try {
+      if (els.toast.matches(':popover-open')) els.toast.hidePopover();
+    } catch { /* 기존 브라우저에서는 일반 고정 알림으로 유지한다. */ }
+  }, 220);
+}
 function showToast(message) {
   els.toast.textContent = message;
+  clearTimeout(showToast.closeTimer);
+  if (typeof els.toast.showPopover === 'function') {
+    try {
+      if (!els.toast.matches(':popover-open')) els.toast.showPopover();
+    } catch { /* Popover API를 사용할 수 없으면 기존 방식으로 표시한다. */ }
+  }
   els.toast.classList.add('show');
   clearTimeout(showToast.timer);
-  showToast.timer = setTimeout(() => els.toast.classList.remove('show'), 2800);
+  showToast.timer = setTimeout(closeToast, 2800);
 }
 function itemKey(item) { return String(item.id || `${item.board}:${item.url || item.title}`); }
 function itemText(item) { return `${item.title || ''} ${item.summary || ''}`.toLocaleLowerCase('ko'); }
