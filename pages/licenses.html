@@ -1,0 +1,73 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e207f"><script>try{const t=localStorage.getItem('fbs.theme');document.documentElement.dataset.theme=['light','dark','system'].includes(t)?t:'system'}catch{document.documentElement.dataset.theme='system'}</script><title>라이선스 | 핀빅스 허브</title><meta name="description" content="핀빅스 허브가 사용하는 오픈소스 구성요소와 인공지능 모델의 라이선스, 그에 따른 이용자와 재배포자의 의무를 안내합니다."><link rel="icon" href="../assets/favicon.svg?v=20260824-2"><link rel="stylesheet" href="./page.css"></head><body>
+<header class="page-top"><div><a href="../">핀빅스 허브</a><small>비공식 학생 프로젝트</small></div></header>
+<main><p class="eyebrow">OPEN SOURCE LICENSES</p><h1>라이선스</h1>
+
+<div class="doc-meta"><dl>
+<dt>최종 갱신일</dt><dd>2026년 8월 25일 (제1판)</dd>
+<dt>프로젝트 코드</dt><dd>MIT License</dd>
+<dt>고지 대상</dt><dd>서비스 실행에 사용되는 외부 소프트웨어·모델·글꼴</dd>
+<dt>적용 제외</dt><dd>수집된 대학 공지 등 원문 콘텐츠(<a href="./copyright.html">저작권 및 권리 정책</a> 참조)</dd>
+</dl></div>
+
+<div class="callout strong">각 구성요소는 서로 다른 조건으로 제공됩니다. 이 서비스가 사용하는 <strong>Gemma 4 E2B 모델과 ONNX 변환본은 Apache License 2.0</strong>으로 제공됩니다. 서비스나 모델을 재배포하거나 수정하여 이용하려는 경우 제3조와 라이선스 원문을 반드시 확인하십시오.</div>
+
+<nav class="toc" aria-label="목차"><h2>목차</h2><ol>
+<li><a href="#l1">프로젝트 코드</a></li>
+<li><a href="#l2">소프트웨어 구성요소</a></li>
+<li><a href="#l3">인공지능 모델</a></li>
+<li><a href="#l4">글꼴</a></li>
+<li><a href="#l5">파비콘과 디자인 자산</a></li>
+<li><a href="#l6">라이선스별 이용자 의무 요약</a></li>
+<li><a href="#l7">고지와 문의</a></li>
+</ol></nav>
+
+<h2 id="l1">1. 프로젝트 코드</h2>
+<p>핀빅스 허브의 자체 소스 코드(<code>index.html</code>, <code>styles.css</code>, <code>app.js</code>, <code>local-llm.js</code>, 수집·검증 스크립트 및 이 문서를 포함한 법적 고지 페이지)는 <strong>MIT License</strong>에 따라 배포됩니다. 전문은 저장소의 <a href="../LICENSE">LICENSE</a> 파일에서 확인할 수 있습니다.</p>
+<p>MIT License는 복제·수정·병합·게시·배포·재실시권 설정·판매를 폭넓게 허용하는 대신, <strong>저작권 표시와 라이선스 전문을 사본에 포함할 것</strong>을 조건으로 하며 어떠한 보증도 제공하지 않습니다. 이 라이선스는 프로젝트 코드에만 적용되며, 서비스가 표시하는 대학 공지의 제목과 요약 등 데이터에는 적용되지 않습니다.</p>
+
+<h2 id="l2">2. 소프트웨어 구성요소</h2>
+<div class="wrap"><table class="grid"><thead><tr><th>구성요소</th><th>제공자</th><th>라이선스</th><th>역할</th></tr></thead><tbody>
+<tr><th>Transformers.js 4.2.0</th><td>Hugging Face</td><td>Apache License 2.0<br><a href="https://github.com/huggingface/transformers.js" target="_blank" rel="noopener noreferrer">공식 저장소</a></td><td>브라우저에서 WebGPU 추론을 수행하는 런타임</td></tr>
+<tr><th>ONNX Runtime Web</th><td>Microsoft (Transformers.js의 의존성으로 함께 전송됨)</td><td>MIT License<br><a href="https://github.com/microsoft/onnxruntime" target="_blank" rel="noopener noreferrer">공식 저장소</a></td><td>ONNX 모델 실행 엔진</td></tr>
+<tr><th>jsDelivr</th><td>jsDelivr 프로젝트</td><td>서비스 이용약관(소프트웨어 배포 아님)<br><a href="https://www.jsdelivr.com/terms" target="_blank" rel="noopener noreferrer">이용약관</a></td><td>모듈과 글꼴 파일의 전송(CDN)</td></tr>
+</tbody></table></div>
+<p>Apache License 2.0은 저작권 표시와 라이선스 사본의 유지, 원본에 <code>NOTICE</code> 파일이 있는 경우 그 내용의 전달, 파일을 수정한 경우 변경 사실의 표시를 요구합니다. 운영자는 Transformers.js를 수정하지 않고 배포판을 그대로 불러와 사용합니다.</p>
+
+<h2 id="l3">3. 인공지능 모델</h2>
+<div class="callout strong"><strong>중요.</strong> 이 서비스가 사용하는 <strong>Gemma 4 E2B와 그 ONNX 변환본에는 Apache License 2.0이 적용</strong>됩니다. Google의 Gemma 이용약관 페이지도 Gemma 4에는 별도의 Gemma 4 라이선스를 확인하라고 안내하며, 해당 라이선스는 Apache License 2.0입니다.</div>
+<div class="wrap"><table class="grid"><tbody>
+<tr><th>모델 식별자</th><td><code>onnx-community/gemma-4-E2B-it-ONNX</code></td></tr>
+<tr><th>원 모델 제공자</th><td>Google</td></tr>
+<tr><th>변환·배포</th><td>ONNX Community (Hugging Face)</td></tr>
+<tr><th>적용 라이선스</th><td>Apache License 2.0</td></tr>
+<tr><th>확인처</th><td><a href="https://huggingface.co/onnx-community/gemma-4-E2B-it-ONNX" target="_blank" rel="noopener noreferrer">ONNX 모델 카드</a> / <a href="https://ai.google.dev/gemma/docs/core/model_card_4" target="_blank" rel="noopener noreferrer">Google Gemma 4 모델 카드</a> / <a href="https://ai.google.dev/gemma/apache_2" target="_blank" rel="noopener noreferrer">Google의 Apache License 2.0 전문</a> / <a href="https://ai.google.dev/gemma/terms" target="_blank" rel="noopener noreferrer">Gemma 버전별 약관 안내</a></td></tr>
+<tr><th>실행 방식</th><td>이용자가 직접 다운로드를 선택한 경우에만 이용자 기기의 WebGPU에서 실행. 운영자는 모델 파일을 재배포하지 않으며 이용자 브라우저가 원 저장소에서 직접 내려받습니다.</td></tr>
+</tbody></table></div>
+<p>Apache License 2.0에 따라 모델 또는 수정본을 재배포할 때에는 라이선스 사본을 제공하고, 수정한 파일에 변경 사실을 명확히 표시하며, 원본의 저작권·특허·상표·귀속 표시를 유지해야 합니다. 원본 배포물에 <code>NOTICE</code> 파일이 포함되어 있다면 그 고지도 함께 전달해야 합니다. 프로젝트 코드의 MIT License는 모델 파일에 적용되지 않습니다.</p>
+<p>Apache License 2.0은 상표 사용 권한을 부여하지 않으며, 모델 이용 과정에서도 관계 법령과 타인의 권리를 준수해야 합니다. 자세한 서비스 이용 조건은 <a href="./terms.html#t8">이용약관 제8조</a>를 확인하십시오.</p>
+
+<h2 id="l4">4. 글꼴</h2>
+<div class="wrap"><table class="grid"><thead><tr><th>글꼴</th><th>저작권자</th><th>라이선스</th></tr></thead><tbody>
+<tr><th>IBM Plex Sans KR</th><td>IBM Corp.</td><td>SIL Open Font License 1.1<br><a href="https://github.com/IBM/plex" target="_blank" rel="noopener noreferrer">글꼴 저장소</a></td></tr>
+</tbody></table></div>
+<p>SIL Open Font License 1.1은 글꼴의 자유로운 사용·연구·수정·재배포를 허용하되, 저작권 표시와 라이선스 전문의 유지, 글꼴 자체만을 단독으로 판매하지 않을 것, 예약 글꼴 이름(Reserved Font Name)을 사용한 파생물 배포 금지를 조건으로 합니다. 운영자는 글꼴 파일을 수정하지 않고 CDN을 통해 원본을 불러와 사용합니다. 글꼴을 불러오지 못하는 환경에서는 시스템 기본 글꼴로 대체 표시되며 서비스 이용에는 지장이 없습니다.</p>
+
+<h2 id="l5">5. 파비콘과 디자인 자산</h2>
+<p>데이터 포인트와 막대그래프를 모티프로 하고 핀테크전공·빅데이터융합전공·스마트생산전공을 세 가지 색상 모듈로 표현한 파비콘은 이 프로젝트를 위하여 직접 제작한 창작물이며, 프로젝트 코드와 동일하게 MIT License로 배포됩니다. 이 자산은 상명대학교의 로고나 공식 CI를 사용하거나 변형한 것이 아닙니다.</p>
+
+<h2 id="l6">6. 라이선스별 이용자 의무 요약</h2>
+<div class="wrap wide"><table class="grid"><thead><tr><th>라이선스</th><th>저작권 고지 유지</th><th>라이선스 사본 첨부</th><th>변경 사실 표시</th><th>추가 제한</th></tr></thead><tbody>
+<tr><th>MIT License</th><td>필요</td><td>필요</td><td>불요</td><td>없음</td></tr>
+<tr><th>Apache License 2.0</th><td>필요</td><td>필요</td><td>필요</td><td>NOTICE 파일 내용 전달, 특허 관련 조항 준수</td></tr>
+<tr><th>SIL OFL 1.1</th><td>필요</td><td>필요</td><td>해당 없음</td><td>글꼴 단독 판매 금지, 예약 글꼴 이름 사용 제한</td></tr>
+</tbody></table></div>
+<p>위 표는 이해를 돕기 위한 요약이며, 각 라이선스의 정확한 권리와 의무는 원문 전문에 따릅니다.</p>
+
+<h2 id="l7">7. 고지와 문의</h2>
+<p>이 페이지는 서비스 실행에 사용되는 구성요소의 고지 목록입니다. 누락되거나 잘못 표기된 라이선스를 발견한 경우 <a href="./support.html">문의 · 신고</a> 페이지를 통해 알려 주시면 확인하여 정정합니다. 라이선스 위반이 확인되는 경우 운영자는 해당 구성요소의 사용을 중단하거나 조건에 맞게 즉시 수정합니다.</p>
+<p>서비스가 표시하는 대학 공지, 기사, 이미지 등 원문 콘텐츠는 이 페이지의 라이선스 대상이 아니며, 그 이용 조건은 <a href="./copyright.html">저작권 및 권리 정책</a>에서 정합니다.</p>
+
+<div class="addendum"><h2>변경 이력</h2>
+<p>2026년 8월 25일 (제1판): 최초 작성. Gemma 4 E2B와 ONNX 변환본의 Apache License 2.0 조건, 소프트웨어와 글꼴의 고지, 라이선스별 재배포 의무를 포함하였습니다.</p></div>
+
+<p class="page-footer"><a href="../">서비스로 돌아가기</a> / <a href="./copyright.html">저작권 및 권리 정책</a> / <a href="./terms.html">이용약관</a> / <a href="./support.html">문의 · 신고</a></p></main></body></html>

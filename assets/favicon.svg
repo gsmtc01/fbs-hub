@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <title>핀빅스 허브</title>
+  <rect width="64" height="64" rx="14" fill="#0e207f"/>
+
+  <!-- 핀테크: 위쪽 금색 모듈 -->
+  <path d="M32 7 53 19 42 28H22L11 19Z" fill="#f2c75c"/>
+
+  <!-- 빅데이터융합: 오른쪽 하늘색 모듈 -->
+  <path d="M53 19v25L32 57V43l10-6v-9Z" fill="#77d1f3"/>
+
+  <!-- 스마트생산: 왼쪽 민트색 모듈 -->
+  <path d="M11 19v25l21 13V43l-10-6v-9Z" fill="#78d6ad"/>
+
+  <!-- 중앙 통합 창구 -->
+  <circle cx="32" cy="33" r="8" fill="#fff"/>
+  <rect x="29" y="30" width="6" height="6" rx="1.5" fill="#0e207f"/>
+</svg>

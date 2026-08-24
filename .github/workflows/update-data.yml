@@ -1,0 +1,49 @@
+name: Update notice data
+
+on:
+  schedule:
+    - cron: '10 21 * * *'
+    - cron: '10 6 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: notice-data
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      TZ: Asia/Seoul
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.13'
+          cache: pip
+          cache-dependency-path: requirements.txt
+      - name: Install collector dependency
+        run: python3 -m pip install --requirement requirements.txt
+      - name: Run parser and policy tests
+        run: python3 -m unittest discover -s tests
+      - name: Run Local AI prompt tests
+        run: node --test tests/test_local_llm.mjs
+      - name: Collect latest public metadata
+        run: python3 ingest.py --limit 30
+      - name: Export public JSON
+        run: python3 export_static.py
+      - name: Validate public data policy
+        run: python3 validate_data.py
+      - name: Commit changed data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add notices.db data/notices.json
+          git diff --cached --quiet || git commit -m "data: 공지 자동 갱신"
+          git push

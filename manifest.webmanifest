@@ -1,0 +1,14 @@
+{
+  "name": "핀빅스 허브",
+  "short_name": "핀빅스 허브",
+  "description": "상명대학교 주요 정보를 한곳에서 확인하는 비공식 학생 프로젝트",
+  "id": "./",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0e207f",
+  "icons": [
+    { "src": "./assets/favicon.svg?v=20260824-2", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

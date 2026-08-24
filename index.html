@@ -1,0 +1,334 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0e207f">
+  <meta name="description" content="상명대학교의 공지, 채용, 학사일정, 학식, 웹진과 연락처 검색을 한곳에서 이용하는 비공식 학생 프로젝트">
+  <title>핀빅스 허브</title>
+  <link rel="icon" href="./assets/favicon.svg?v=20260824-2" type="image/svg+xml">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <script>
+    try {
+      const savedTheme = localStorage.getItem('fbs.theme');
+      document.documentElement.dataset.theme = ['light', 'dark', 'system'].includes(savedTheme) ? savedTheme : 'system';
+    } catch {
+      document.documentElement.dataset.theme = 'system';
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/IBMPlexSansKR/IBMPlexSansKR.css">
+  <link rel="stylesheet" href="./styles.css?v=20260825-9">
+</head>
+<body>
+  <a class="skip-link" href="#content">본문으로 바로가기</a>
+  <header class="topbar">
+    <div class="topbar-inner">
+      <a class="brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈">
+        <img src="./assets/favicon.svg?v=20260824-2" width="27" height="27" alt="">
+        <span>핀빅스 허브</span>
+      </a>
+      <nav class="desktop-nav" aria-label="주요 메뉴"></nav>
+      <button class="icon-button" id="settingsButton" type="button" aria-haspopup="dialog" aria-label="설정 열기">
+        <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
+          <circle cx="12" cy="12" r="3"></circle>
+        </svg>
+      </button>
+    </div>
+  </header>
+
+  <main id="content" class="app-shell">
+    <section class="workspace" id="notice">
+      <div class="mobile-heading">
+        <div class="mobile-brand-row">
+          <div class="mobile-leading">
+            <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-controls="mobileNav" aria-expanded="false" aria-label="메뉴 열기">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+            </button>
+            <a class="mobile-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="24" height="24" alt=""><span>핀빅스 허브</span></a>
+          </div>
+          <div class="mobile-header-actions">
+            <button class="mobile-settings" id="mobileSettingsButton" type="button" aria-haspopup="dialog" aria-label="설정 열기">
+              <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+            </button>
+          </div>
+        </div>
+        <div class="mobile-title-row"><h1 id="mobileTitle">공지사항</h1></div>
+      </div>
+
+      <div class="section-head">
+        <div>
+          <h1 id="sectionTitle">공지사항</h1>
+        </div>
+        <form class="search" id="searchForm" role="search">
+          <label class="sr-only" for="searchInput">제목과 요약 검색</label>
+          <input id="searchInput" type="text" inputmode="search" placeholder="제목/요약 검색" autocomplete="off">
+          <button type="submit" aria-label="검색">
+            <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg>
+          </button>
+        </form>
+      </div>
+
+      <form class="mobile-search search" id="mobileSearchForm" role="search">
+        <label class="sr-only" for="mobileSearchInput">제목과 요약 검색</label>
+        <input id="mobileSearchInput" type="text" inputmode="search" placeholder="제목/요약 검색" autocomplete="off">
+        <button type="submit" aria-label="검색">
+          <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg>
+        </button>
+      </form>
+
+      <div id="filters" class="filters" aria-label="목록 필터"></div>
+      <div id="noticeList" class="notice-list" aria-busy="true"></div>
+      <button id="moreButton" class="more-button" type="button" hidden>더 보기</button>
+    </section>
+
+    <aside class="side-rail" aria-label="요약과 일정">
+      <section class="ai-card" id="aiCard">
+        <div class="card-label-row">
+          <span class="ai-label">
+            <svg class="ai-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+              <path d="M9 10h.01M15 10h.01M9 14h6M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+            </svg>
+            AI 요약
+          </span>
+          <button class="privacy-badge" id="onDeviceInfoButton" type="button" aria-haspopup="dialog" aria-controls="onDeviceDialog">
+            기기 안에서 처리
+            <svg viewBox="0 0 20 20" aria-hidden="true">
+              <circle cx="10" cy="10" r="7.5"></circle>
+              <path d="M10 9v5M10 6.2h.01"></path>
+            </svg>
+          </button>
+          <button id="mobileAIToggle" class="mobile-ai-toggle" type="button" aria-controls="aiContent" aria-expanded="false">AI 열기</button>
+        </div>
+        <div id="aiContent"></div>
+      </section>
+      <section class="upcoming-card">
+        <div class="card-heading">
+          <h2 class="heading-with-icon">
+            <svg class="calendar-heading-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="5" width="18" height="16" rx="3"></rect>
+              <path d="M8 3v4M16 3v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 17h.01M12 17h.01"></path>
+            </svg>
+            다가오는 일정
+          </h2>
+          <button type="button" id="calendarShortcut">전체 보기</button>
+        </div>
+        <p id="todayLabel" class="muted"></p>
+        <div id="upcomingList"></div>
+      </section>
+      <section class="social-card" aria-labelledby="socialTitle">
+        <div class="card-heading social-heading">
+          <h2 id="socialTitle">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.4" cy="6.7" r=".8" fill="currentColor" stroke="none"></circle>
+            </svg>
+            인스타그램
+          </h2>
+        </div>
+        <p class="social-intro">상명대학교 관련 Instagram 계정으로 이동합니다.</p>
+        <nav class="social-links" aria-label="상명대학교 관련 Instagram 계정">
+          <a href="https://www.instagram.com/sangmyung_univ/" target="_blank" rel="noopener noreferrer" aria-label="상명대학교 Instagram 새 창에서 열기">
+            <span><strong>상명대학교</strong><small>@sangmyung_univ</small></span><span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.instagram.com/smu.seoul_r.c/" target="_blank" rel="noopener noreferrer" aria-label="상명대학교 서울캠퍼스 대의원회 Instagram 새 창에서 열기">
+            <span><strong>서울캠퍼스 대의원회</strong><small>@smu.seoul_r.c</small></span><span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.instagram.com/smu_gyeol/" target="_blank" rel="noopener noreferrer" aria-label="서울캠퍼스 총학생회 Instagram 새 창에서 열기">
+            <span><strong>서울캠퍼스 총학생회</strong><small>@smu_gyeol</small></span><span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.instagram.com/smu_on/" target="_blank" rel="noopener noreferrer" aria-label="융합공과대학 학생회 Instagram 새 창에서 열기">
+            <span><strong>융합공과대학 학생회</strong><small>@smu_on</small></span><span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+          <a href="https://www.instagram.com/smu_aurum/" target="_blank" rel="noopener noreferrer" aria-label="지능·데이터융합학부 핀빅스 학생회 Instagram 새 창에서 열기">
+            <span><strong>핀빅스 학생회</strong><small>@smu_aurum</small></span><span class="external-mark" aria-hidden="true">↗</span>
+          </a>
+          <details class="social-more">
+            <summary>나머지 계정 보기 <span aria-hidden="true">⌄</span></summary>
+            <div class="social-more-list">
+              <a href="https://www.instagram.com/smu_smbs/" target="_blank" rel="noopener noreferrer" aria-label="교육방송국 SMBS Instagram 새 창에서 열기">
+                <span><strong>교육방송국 SMBS</strong><small>@smu_smbs</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.instagram.com/smu.huss/" target="_blank" rel="noopener noreferrer" aria-label="인문사회융합인재양성사업단 Instagram 새 창에서 열기">
+                <span><strong>인문사회융합인재양성사업단</strong><small>@smu.huss</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.instagram.com/smu_peeroreum/" target="_blank" rel="noopener noreferrer" aria-label="비교과통합지원센터 Instagram 새 창에서 열기">
+                <span><strong>비교과통합지원센터</strong><small>@smu_peeroreum</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.instagram.com/smu_biocoss/" target="_blank" rel="noopener noreferrer" aria-label="바이오헬스 혁신융합대학 사업단 Instagram 새 창에서 열기">
+                <span><strong>바이오헬스 혁신융합대학 사업단</strong><small>@smu_biocoss</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.instagram.com/smu_library/" target="_blank" rel="noopener noreferrer" aria-label="학술정보관 Instagram 새 창에서 열기">
+                <span><strong>학술정보관</strong><small>@smu_library</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+              <a href="https://www.instagram.com/sangmyung_counsel/" target="_blank" rel="noopener noreferrer" aria-label="학생상담센터 Instagram 새 창에서 열기">
+                <span><strong>학생상담센터</strong><small>@sangmyung_counsel</small></span><span class="external-mark" aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </details>
+        </nav>
+      </section>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <div>
+      <a class="footer-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="24" height="24" alt=""><strong>핀빅스 허브</strong></a>
+      <p>상명대학교의 공식 서비스가 아닌 비공식 학생 프로젝트입니다. 게시물의 저작권과 원문은 각 원저작자에게 있습니다.</p>
+    </div>
+    <nav aria-label="서비스 정보">
+      <button type="button" data-open-settings>설정</button>
+      <a href="./pages/privacy.html">개인정보 처리방침</a>
+      <a href="./pages/terms.html">이용약관</a>
+      <a href="./pages/copyright.html">저작권 및 권리 정책</a>
+      <a href="./pages/licenses.html">라이선스</a>
+      <a href="./pages/support.html">문의 · 신고</a>
+      <a data-repository-link hidden>GitHub 저장소</a>
+    </nav>
+  </footer>
+
+  <div class="mobile-nav-backdrop" id="mobileNavBackdrop" aria-hidden="true"></div>
+  <nav class="mobile-nav" id="mobileNav" aria-labelledby="mobileNavTitle" aria-hidden="true" inert>
+    <div class="mobile-nav-head">
+      <a class="mobile-nav-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="27" height="27" alt=""><strong id="mobileNavTitle">핀빅스 허브</strong></a>
+      <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="메뉴 닫기">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+    <p class="mobile-nav-label">주요 메뉴</p>
+    <div class="mobile-nav-list"></div>
+  </nav>
+
+  <dialog id="settingsDialog" class="settings-dialog" aria-labelledby="settingsTitle">
+    <form method="dialog" class="dialog-head">
+      <div><h2 id="settingsTitle">설정</h2></div>
+      <button class="dialog-close" value="close" aria-label="설정 닫기">닫기</button>
+    </form>
+    <div class="dialog-body">
+      <section class="setting-section">
+        <div class="setting-title"><h3>On-Device AI</h3><span id="modelStateBadge" class="status-badge">확인 중</span></div>
+        <p>주요 내용을 빠르게 정리하고, 궁금한 내용을 이어서 질문할 수 있습니다. 처음 사용할 때 On-Device AI 모델을 다운로드해 주세요.</p>
+        <dl class="model-facts">
+          <div><dt>방식</dt><dd>On-Device AI 언어 모델(Google Gemma 4 E2B)</dd></div>
+          <div><dt>라이선스</dt><dd><a href="https://ai.google.dev/gemma/apache_2" target="_blank" rel="noopener noreferrer">Apache License 2.0</a></dd></div>
+          <div><dt>실행</dt><dd>Transformers.js / WebGPU / q4f16</dd></div>
+          <div><dt>저장</dt><dd id="modelStorageEstimate">브라우저 캐시, 수 GB의 여유 공간 권장</dd></div>
+          <div><dt>전송</dt><dd>추론 입력은 외부 서버로 전송하지 않음</dd></div>
+        </dl>
+        <div id="webgpuNotice" class="notice-box"></div>
+        <div id="downloadProgress" class="download-progress" hidden>
+          <div class="progress-meta"><span id="downloadStatus">준비 중</span><strong id="downloadPercent">0%</strong></div>
+          <progress id="downloadBar" max="100" value="0">0%</progress>
+          <small id="downloadBytes"></small>
+        </div>
+        <div class="setting-actions">
+          <button id="downloadModelButton" class="primary-button" type="button">On-Device AI 모델 다운로드</button>
+          <button id="deleteModelButton" class="secondary-button danger" type="button" hidden>모델 삭제</button>
+        </div>
+        <p class="fine-print">최초 모델 다운로드에는 네트워크가 필요합니다. 이후 추론은 현재 기기에서 실행되지만, 브라우저가 라이브러리 또는 모델 캐시를 확인하거나 갱신하기 위해 네트워크에 다시 연결할 수 있습니다. WebGPU와 브라우저 캐시 지원은 브라우저 및 기기에 따라 다릅니다.</p>
+      </section>
+      <section class="setting-section" aria-labelledby="personalizationTitle">
+        <div class="setting-title"><h3 id="personalizationTitle">내 관심 정보</h3><span id="personalizationStateBadge" class="status-badge">브라우저에 저장</span></div>
+        <p>관심 있는 게시판과 전공, 키워드를 선택하면 관련 항목을 표시하고 목록에서 따로 모아볼 수 있습니다.</p>
+        <fieldset class="preference-fieldset">
+          <legend>관심 게시판</legend>
+          <div class="preference-options">
+            <label class="preference-check"><input type="checkbox" value="univ" data-interest-source><span>상명대학교</span></label>
+            <label class="preference-check"><input type="checkbox" value="coneng" data-interest-source><span>융합공과대학</span></label>
+            <label class="preference-check"><input type="checkbox" value="fbs" data-interest-source><span>핀빅스</span></label>
+            <label class="preference-check"><input type="checkbox" value="recruit" data-interest-source><span>채용·홍보</span></label>
+            <label class="preference-check"><input type="checkbox" value="webzine" data-interest-source><span>웹진</span></label>
+          </div>
+        </fieldset>
+        <fieldset class="preference-fieldset">
+          <legend>관심 전공·주제</legend>
+          <div class="preference-options">
+            <label class="preference-check"><input type="checkbox" value="핀테크" data-major-keyword><span>핀테크</span></label>
+            <label class="preference-check"><input type="checkbox" value="빅데이터" data-major-keyword><span>빅데이터</span></label>
+            <label class="preference-check"><input type="checkbox" value="스마트생산" data-major-keyword><span>스마트생산</span></label>
+          </div>
+          <label class="keyword-input-label" for="interestKeywordsInput">추가 관심 키워드</label>
+          <input id="interestKeywordsInput" class="preference-text-input" type="text" maxlength="240" autocomplete="off" placeholder="예: 인턴, 공모전, 복수전공">
+          <small class="field-help">쉼표로 구분하여 최대 12개까지 입력할 수 있습니다. 이름, 학번, 연락처 등 개인정보는 입력하지 마세요.</small>
+        </fieldset>
+        <fieldset class="preference-fieldset">
+          <legend>중요 키워드 강조</legend>
+          <div class="preference-options">
+            <label class="preference-check important"><input type="checkbox" value="장학" data-important-keyword><span>장학</span></label>
+            <label class="preference-check important"><input type="checkbox" value="채용" data-important-keyword><span>채용</span></label>
+            <label class="preference-check important"><input type="checkbox" value="수강신청" data-important-keyword><span>수강신청</span></label>
+          </div>
+        </fieldset>
+        <div class="preference-stats" aria-live="polite">
+          <span><strong id="favoriteCount">0</strong>개 즐겨찾기</span>
+          <span><strong id="readCount">0</strong>개 읽음</span>
+          <button id="clearReadHistoryButton" type="button">읽음 기록 초기화</button>
+        </div>
+        <div class="setting-actions">
+          <button id="savePersonalizationButton" class="primary-button" type="button">관심 정보 저장</button>
+          <button id="resetPersonalizationButton" class="secondary-button" type="button">기본값 복원</button>
+        </div>
+        <p class="fine-print">관심 설정, 즐겨찾기와 읽음 기록은 현재 브라우저에만 저장됩니다. 최근 7일 이내에 게시되고 아직 열지 않은 항목을 새 공지로 표시합니다.</p>
+      </section>
+      <section class="setting-section">
+        <h3>표시 설정</h3>
+        <label class="select-row">한 번에 표시할 공지
+          <select id="pageSizeSelect"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option></select>
+        </label>
+        <label class="select-row">화면 테마
+          <select id="themeSelect">
+            <option value="system">시스템 설정</option>
+            <option value="light">라이트</option>
+            <option value="dark">다크</option>
+          </select>
+        </label>
+        <label class="toggle-row"><span>움직임 줄이기<small>전환 효과를 최소화합니다.</small></span><input id="reduceMotionToggle" type="checkbox"></label>
+      </section>
+      <section class="setting-section link-list">
+        <h3>서비스 정보</h3>
+        <a href="./pages/privacy.html">개인정보 처리방침 <span>›</span></a>
+        <a href="./pages/terms.html">이용약관 <span>›</span></a>
+        <a href="./pages/copyright.html">저작권 및 권리 정책 <span>›</span></a>
+        <a href="./pages/licenses.html">오픈소스 라이선스 <span>›</span></a>
+        <a href="./pages/support.html">문의 · 신고 <span>›</span></a>
+        <a data-repository-link hidden>GitHub 저장소 <span>↗</span></a>
+      </section>
+    </div>
+  </dialog>
+
+  <dialog id="onDeviceDialog" class="info-dialog" aria-labelledby="onDeviceTitle" aria-describedby="onDeviceIntro">
+    <form method="dialog" class="dialog-head">
+      <div>
+        <h2 id="onDeviceTitle">On-Device AI</h2>
+      </div>
+      <button class="dialog-close" value="close" aria-label="On-Device AI 설명 닫기">닫기</button>
+    </form>
+    <div class="info-dialog-body">
+      <div class="on-device-intro">
+        <span class="on-device-icon" aria-hidden="true">
+          <svg viewBox="0 0 32 32">
+            <rect x="7" y="7" width="18" height="18" rx="5"></rect>
+            <path d="M12 14h.01M20 14h.01M12 19h8M12 3v4M20 3v4M12 25v4M20 25v4M3 12h4M3 20h4M25 12h4M25 20h4"></path>
+          </svg>
+        </span>
+        <p id="onDeviceIntro">AI 요약과 이어지는 질문은 외부 AI 서비스가 아니라 현재 사용 중인 브라우저와 기기에서 처리됩니다.</p>
+      </div>
+      <dl class="on-device-facts">
+        <div><dt>개인정보 보호</dt><dd>화면의 주요 내용과 입력한 질문을 외부 AI 서버로 전송하지 않습니다.</dd></div>
+        <div><dt>모델 다운로드</dt><dd>처음 사용할 때 인터넷으로 모델을 내려받습니다. 이후에는 브라우저 캐시를 우선 사용하지만 캐시 확인이나 갱신을 위한 통신이 발생할 수 있습니다.</dd></div>
+        <div><dt>기기 요구 사항</dt><dd>WebGPU를 지원하는 브라우저와 수 GB의 저장 공간이 필요하며, 기기 성능에 따라 생성 속도가 달라질 수 있습니다.</dd></div>
+        <div><dt>모델 라이선스</dt><dd>Gemma 4는 Apache License 2.0으로 제공됩니다.</dd></div>
+        <div><dt>음성·공유</dt><dd>음성 재생 시 결과가 브라우저 또는 운영체제의 음성 엔진에 전달됩니다. 공유는 이용자가 버튼을 선택한 경우에만 실행됩니다.</dd></div>
+        <div><dt>사용자 확인</dt><dd>AI가 만든 요약과 답변에는 오류가 있을 수 있으므로 중요한 내용은 반드시 원문에서 확인해 주세요.</dd></div>
+      </dl>
+    </div>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  <noscript><div class="noscript">이 사이트의 검색과 필터를 사용하려면 JavaScript를 활성화해야 합니다.</div></noscript>
+  <script type="module" src="./app.js?v=20260825-12"></script>
+</body>
+</html>
