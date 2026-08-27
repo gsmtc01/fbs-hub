@@ -8,10 +8,61 @@ import {
   normalizeAIOutput,
 } from '../local-llm.js';
 import { mealMenuText } from '../meal-display.js';
+import { composeSharePayload } from '../share-utils.js';
 
 const items = [{
   title: '장학금 신청 안내', date: '2026-08-23', summary: '신청 기간과 자격을 원문에서 확인하세요.',
 }];
+
+for (const sample of [
+  {
+    section: '공지사항',
+    url: 'https://www.smu.ac.kr/kor/life/notice.do?mode=view&articleNo=768083',
+  },
+  {
+    section: '채용·홍보',
+    url: 'https://www.smu.ac.kr/fbs/community/intellirecruit.do?mode=view&articleNo=766684',
+  },
+  {
+    section: '웹진',
+    url: 'https://www.smu.ac.kr/kor/life/sm-today.do?mode=view&articleNo=123456',
+  },
+]) {
+  test(`${sample.section} 공유 URL은 본문 뒤의 독립된 마지막 줄로 전달한다`, () => {
+    const text = `[${sample.section}] 테스트 제목\n2026.08.28`;
+    const payload = composeSharePayload({ title: '핀빅스 허브', text, url: sample.url });
+    assert.deepEqual(payload.shareData, {
+      title: '핀빅스 허브',
+      text: `${text}\n\n${sample.url}`,
+    });
+    assert.equal(payload.clipboardText, payload.shareData.text);
+    assert.equal('url' in payload.shareData, false);
+    assert.equal(payload.shareData.text.split('\n').at(-1), sample.url);
+  });
+}
+
+for (const section of ['학사일정', '학식']) {
+  test(`${section} 공유는 URL 없이 해당 텍스트만 전달한다`, () => {
+    const text = `[${section}] 테스트 내용`;
+    const payload = composeSharePayload({ title: '핀빅스 허브', text });
+    assert.deepEqual(payload.shareData, { title: '핀빅스 허브', text });
+    assert.equal(payload.clipboardText, text);
+    assert.equal('url' in payload.shareData, false);
+  });
+}
+
+test('공유 URL에 뒤따르는 제목 문자열이 주소로 결합되지 않는다', () => {
+  const url = 'https://www.smu.ac.kr/kor/life/notice.do?mode=view&articleNo=768083';
+  const payload = composeSharePayload({
+    title: '핀빅스 허브',
+    text: '[공지사항] [학생복지팀] 장학금 신청 안내',
+    url,
+  });
+  const sharedUrl = payload.shareData.text.split('\n').at(-1);
+  assert.equal(sharedUrl, url);
+  assert.equal(new URL(sharedUrl).searchParams.get('articleNo'), '768083');
+  assert.doesNotMatch(sharedUrl, /%20|\[공지사항]/);
+});
 
 test('질문 모드는 일반 상식과 공지 근거를 구분하도록 요청한다', () => {
   const request = buildAIRequest(items, 'notice', '장학금은 일반적으로 어떻게 신청해?');

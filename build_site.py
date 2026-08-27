@@ -7,7 +7,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent
 DIST = ROOT / "dist"
 FILES = [
-    "index.html", "styles.css", "app.js", "local-llm.js", "meal-display.js",
+    "index.html", "styles.css", "app.js", "local-llm.js", "meal-display.js", "share-utils.js",
     "sw.js", "manifest.webmanifest", "robots.txt", "LICENSE",
 ]
 DIRECTORIES = ["assets", "data", "pages"]

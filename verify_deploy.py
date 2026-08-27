@@ -21,6 +21,7 @@ REQUIRED_FILES = {
     "index.html",
     "local-llm.js",
     "meal-display.js",
+    "share-utils.js",
     "manifest.webmanifest",
     "pages/copyright.html",
     "pages/licenses.html",

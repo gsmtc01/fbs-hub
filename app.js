@@ -1,5 +1,6 @@
 import { localAI } from './local-llm.js?v=20260825-9';
 import { mealMenuText } from './meal-display.js?v=20260825-1';
+import { composeSharePayload } from './share-utils.js?v=20260828-1';
 
 const CONFIG = {
   dataUrl: './data/notices.json',
@@ -837,13 +838,12 @@ async function generateSummary(question = '') {
 }
 
 async function shareExternal({ title, text, url = '', copiedMessage, failedMessage }) {
-  const shareData = { title, text };
-  if (url) shareData.url = url;
+  const payload = composeSharePayload({ title, text, url });
   try {
     if (navigator.share) {
-      await navigator.share(shareData);
+      await navigator.share(payload.shareData);
     } else if (navigator.clipboard) {
-      await navigator.clipboard.writeText([text, url].filter(Boolean).join('\n\n'));
+      await navigator.clipboard.writeText(payload.clipboardText);
       showToast(copiedMessage);
     } else {
       showToast('이 브라우저에서는 외부 공유를 지원하지 않습니다.');

@@ -182,6 +182,7 @@ GitHub Pages 기본 주소에서는 저장소와 이슈 주소를 자동으로 �
 | 경로 | 역할 |
 |---|---|
 | `index.html`, `styles.css`, `app.js` | 메인 화면과 사용자 기능 |
+| `share-utils.js` | 외부 공유 본문과 원문 URL의 호환성 있는 조합 |
 | `local-llm.js` | WebGPU 기반 On-Device AI 실행 |
 | `collector.py`, `ingest.py` | 공개 목록 수집과 SQLite 적재 |
 | `export_static.py` | 공개 가능한 필드만 JSON으로 내보내기 |
