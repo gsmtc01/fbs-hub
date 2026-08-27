@@ -30,6 +30,7 @@ const aiIcon = (ready = false) => `<svg class="ai-main-icon" viewBox="0 0 24 24"
 const SPEAKER_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.8 8.5H3.5v7h3.3L11 19V5Z"></path><path d="M15.2 9.1a4.2 4.2 0 0 1 0 5.8M17.8 6.5a7.8 7.8 0 0 1 0 11"></path></svg>`;
 const STOP_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"></rect></svg>`;
 const SHARE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"></path></svg>`;
+const ITEM_SHARE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3M7.5 7.5 12 3l4.5 4.5"></path><path d="M5 11v9h14v-9"></path></svg>`;
 const SEND_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8-3-8Z"></path><path d="M7 12h13"></path></svg>`;
 const STAR_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"></path></svg>`;
 const NAV_ICONS = {
@@ -390,14 +391,15 @@ function itemMarkup(item) {
   if (broken) tags.push('<span class="tag broken">링크 확인 필요</span>');
   const classes = ['notice-item', item.pinned ? 'pinned' : '', favorite ? 'favorite' : '', read ? 'read' : '', fresh ? 'new' : '', interested ? 'interested' : ''].filter(Boolean).join(' ');
   const favoriteLabel = favorite ? '즐겨찾기에서 제거' : '즐겨찾기에 추가';
-  return `<article class="${classes}" data-item-id="${escapeHTML(key)}"><${wrapper} class="notice-main" ${attrs}><div><div class="notice-title-row">${tags.join('')}<span class="notice-title">${highlight(item.title, item)}</span></div>${item.summary ? `<p class="notice-summary">${highlight(item.summary, item)}</p>` : ''}<p class="notice-meta">${escapeHTML(item.writer || item.boardLabel || sourceShort(item.board))} / ${escapeHTML(formatDate(item.date))}${item.views ? ` / 조회 ${formatViews(item.views)}` : ''}${read ? ' / 읽음' : ''}${!broken ? ' / <span class="external-mark">원문 ↗</span>' : ''}</p></div></${wrapper}><button class="favorite-button${favorite ? ' active' : ''}" type="button" data-favorite-id="${escapeHTML(key)}" aria-label="${escapeHTML(item.title)} ${favoriteLabel}" aria-pressed="${favorite}">${STAR_ICON}</button></article>`;
+  return `<article class="${classes}" data-item-id="${escapeHTML(key)}"><${wrapper} class="notice-main" ${attrs}><div><div class="notice-title-row">${tags.join('')}<span class="notice-title">${highlight(item.title, item)}</span></div>${item.summary ? `<p class="notice-summary">${highlight(item.summary, item)}</p>` : ''}<p class="notice-meta">${escapeHTML(item.writer || item.boardLabel || sourceShort(item.board))} / ${escapeHTML(formatDate(item.date))}${item.views ? ` / 조회 ${formatViews(item.views)}` : ''}${read ? ' / 읽음' : ''}${!broken ? ' / <span class="external-mark">원문 ↗</span>' : ''}</p></div></${wrapper}><div class="item-actions"><button class="favorite-button${favorite ? ' active' : ''}" type="button" data-favorite-id="${escapeHTML(key)}" aria-label="${escapeHTML(item.title)} ${favoriteLabel}" aria-pressed="${favorite}">${STAR_ICON}</button><button class="item-share-button" type="button" data-share-item-id="${escapeHTML(key)}" aria-label="${escapeHTML(item.title)} 외부 공유">${ITEM_SHARE_ICON}</button></div></article>`;
 }
 
 function calendarGroupsMarkup(items, nearestDate = '') {
   const groups = Map.groupBy ? Map.groupBy(items, (x) => x.date.slice(0, 7)) : items.reduce((map, item) => map.set(item.date.slice(0, 7), [...(map.get(item.date.slice(0, 7)) || []), item]), new Map());
   return [...groups.entries()].map(([month, values]) => `<section><h2 class="calendar-month">${month.replace('-', '. ')}</h2>${values.map((item) => {
     const nearest = item.date === nearestDate;
-    return `<a class="calendar-item${nearest ? ' nearest' : ''}" href="${escapeHTML(safeUrl(item.url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="calendar-date">${escapeHTML(formatDate(item.date).slice(5))}</span><span class="tag">학사</span><span class="calendar-title">${nearest ? '<small class="nearest-label">가장 가까운 일정</small>' : ''}${highlight(item.title)}</span></a>`;
+    const key = itemKey(item);
+    return `<article class="calendar-item${nearest ? ' nearest' : ''}"><a class="calendar-main" href="${escapeHTML(safeUrl(item.url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="calendar-date">${escapeHTML(formatDate(item.date).slice(5))}</span><span class="tag">학사</span><span class="calendar-title">${nearest ? '<small class="nearest-label">가장 가까운 일정</small>' : ''}${highlight(item.title)}</span></a><button class="item-share-button" type="button" data-share-item-id="${escapeHTML(key)}" aria-label="${escapeHTML(item.title)} 일정 외부 공유">${ITEM_SHARE_ICON}</button></article>`;
   }).join('')}</section>`).join('');
 }
 function calendarMarkup(items) {
@@ -430,11 +432,12 @@ function mealMarkup(items) {
   }).join('');
   return `<div class="meal-intro"><div class="meal-intro-copy"><strong>미래백년관 정오아카데미</strong><span class="meal-hours"><span class="meal-hours-row"><b>조식</b><span>간편식 08:30 · 식사류 09:30 (소진 시까지)</span></span><span class="meal-hours-row"><b>중식</b><span>11:00~13:30</span></span></span><small class="meal-program-note">코너별 주간 식단입니다. 조식은 학기 중 ‘천원의 아침밥’ 사업 운영 기간에만 표시됩니다.</small></div><label class="meal-week-picker"><span>조회 주간</span><select data-meal-week aria-label="학식 조회 주간">${weekOptions}</select></label></div>${[...groups.entries()].map(([day, rows]) => {
     const isToday = rows.some((item) => item.date === today) || mealDayDate(day, today) === today;
-    return `<a class="meal-day${isToday ? ' today' : ''}"${isToday ? ' aria-current="date"' : ''} href="${escapeHTML(safeUrl(rows[0].url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="meal-date">${isToday ? '<small class="meal-today-label">오늘</small>' : ''}${highlight(day)}</span><span class="meal-corners">${rows.map((item) => {
+    const mealDate = rows[0].date || mealDayDate(day, today);
+    return `<article class="meal-day${isToday ? ' today' : ''}"${isToday ? ' aria-current="date"' : ''}><a class="meal-main" href="${escapeHTML(safeUrl(rows[0].url))}" target="_blank" rel="noopener noreferrer nofollow"><span class="meal-date">${isToday ? '<small class="meal-today-label">오늘</small>' : ''}${highlight(day)}</span><span class="meal-corners">${rows.map((item) => {
       const corner = item.corner || (rows.length > 1 ? '코너' : '한식');
       const label = item.meal ? `${item.meal} · ${corner}` : corner;
       return `<span class="meal-corner-row"><strong>${escapeHTML(label)}</strong><span>${highlight(mealMenuText(item))}</span></span>`;
-    }).join('')}</span></a>`;
+    }).join('')}</span></a><button class="item-share-button meal-share-button" type="button" data-share-meal-date="${escapeHTML(mealDate)}" aria-label="${escapeHTML(day)} 학식 외부 공유">${ITEM_SHARE_ICON}</button></article>`;
   }).join('')}`;
 }
 
@@ -833,23 +836,67 @@ async function generateSummary(question = '') {
   }
 }
 
-async function shareAISummary() {
-  const text = markdownToSpeech(state.aiText);
-  if (!text) { showToast('공유할 AI 요약이 없습니다.'); return; }
-  const title = `핀빅스 허브 | ${currentSection().desktop} AI 요약`;
-  const sharedText = `생성형 AI가 만든 내용입니다.\n\n${text}`;
+async function shareExternal({ title, text, url = '', copiedMessage, failedMessage }) {
+  const shareData = { title, text };
+  if (url) shareData.url = url;
   try {
     if (navigator.share) {
-      await navigator.share({ title, text: sharedText });
+      await navigator.share(shareData);
     } else if (navigator.clipboard) {
-      await navigator.clipboard.writeText(`${title}\n\n${sharedText}`);
-      showToast('AI 요약을 클립보드에 복사했습니다.');
+      await navigator.clipboard.writeText([text, url].filter(Boolean).join('\n\n'));
+      showToast(copiedMessage);
     } else {
       showToast('이 브라우저에서는 외부 공유를 지원하지 않습니다.');
     }
   } catch (error) {
-    if (error.name !== 'AbortError') showToast('AI 요약을 공유하지 못했습니다.');
+    if (error.name !== 'AbortError') showToast(failedMessage);
   }
+}
+
+async function shareItem(key) {
+  const item = state.data?.items.find((candidate) => itemKey(candidate) === key);
+  if (!item) { showToast('공유할 항목을 찾지 못했습니다.'); return; }
+  const calendar = item.board === 'calendar';
+  const sectionLabel = calendar ? '학사일정' : currentSection().desktop;
+  const meta = calendar
+    ? formatDate(item.date)
+    : [item.writer || item.boardLabel || sourceShort(item.board), formatDate(item.date)].filter(Boolean).join(' / ');
+  const text = [`[${sectionLabel}] ${item.title}`, meta, item.summary].filter(Boolean).join('\n');
+  await shareExternal({
+    title: '핀빅스 허브',
+    text,
+    url: calendar ? '' : safeUrl(item.url),
+    copiedMessage: calendar ? '학사일정 내용을 클립보드에 복사했습니다.' : '항목과 원문 링크를 클립보드에 복사했습니다.',
+    failedMessage: '항목을 공유하지 못했습니다.',
+  });
+}
+
+async function shareMeal(date) {
+  const rows = sectionItems({ includePersonal: false }).filter((item) => item.board === 'restaurant' && item.date === date);
+  if (!rows.length) { showToast('공유할 학식 정보를 찾지 못했습니다.'); return; }
+  const day = rows[0].day || formatDate(date);
+  const menu = [...new Set(rows.map((item) => {
+    const corner = item.corner || (rows.length > 1 ? '코너' : '한식');
+    const label = item.meal ? `${item.meal} / ${corner}` : corner;
+    return `${label}: ${mealMenuText(item)}`;
+  }))].join('\n');
+  await shareExternal({
+    title: '핀빅스 허브',
+    text: ['[학식] 미래백년관 정오아카데미', day, menu].join('\n'),
+    copiedMessage: '학식 메뉴를 클립보드에 복사했습니다.',
+    failedMessage: '학식 정보를 공유하지 못했습니다.',
+  });
+}
+
+async function shareAISummary() {
+  const text = markdownToSpeech(state.aiText);
+  if (!text) { showToast('공유할 AI 요약이 없습니다.'); return; }
+  await shareExternal({
+    title: '핀빅스 허브',
+    text: `[${currentSection().desktop} AI 요약]\n생성형 AI가 만든 내용입니다.\n\n${text}`,
+    copiedMessage: 'AI 요약을 클립보드에 복사했습니다.',
+    failedMessage: 'AI 요약을 공유하지 못했습니다.',
+  });
 }
 
 function moveAICard() {
@@ -896,6 +943,16 @@ document.addEventListener('click', (event) => {
   const favorite = event.target.closest('[data-favorite-id]');
   if (favorite) {
     toggleFavorite(favorite.dataset.favoriteId);
+    return;
+  }
+  const itemShare = event.target.closest('[data-share-item-id]');
+  if (itemShare) {
+    shareItem(itemShare.dataset.shareItemId);
+    return;
+  }
+  const mealShare = event.target.closest('[data-share-meal-date]');
+  if (mealShare) {
+    shareMeal(mealShare.dataset.shareMealDate);
     return;
   }
   const noticeLink = event.target.closest('[data-notice-link]');
