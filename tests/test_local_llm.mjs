@@ -3,12 +3,15 @@ import test from 'node:test';
 
 import {
   buildAIRequest,
+  extractQueryTerms,
   friendlyAIError,
+  getGenerationConfig,
   getLocalAISupport,
   normalizeAIOutput,
+  prepareAIEvidence,
 } from '../local-llm.js';
 import { mealMenuText } from '../meal-display.js';
-import { composeSharePayload } from '../share-utils.js';
+import { composeSharePayload, shareExternally } from '../share-utils.js';
 
 const items = [{
   title: '장학금 신청 안내', date: '2026-08-23', summary: '신청 기간과 자격을 원문에서 확인하세요.',
@@ -64,6 +67,42 @@ test('공유 URL에 뒤따르는 제목 문자열이 주소로 결합되지 않�
   assert.doesNotMatch(sharedUrl, /%20|\[공지사항]/);
 });
 
+test('시스템 공유 창을 취소하면 오류 토스트를 표시하지 않는다', async () => {
+  const messages = [];
+  await shareExternally(
+    {
+      title: '핀빅스 허브',
+      text: '[공지사항] 테스트 제목',
+      failedMessage: '항목을 공유하지 못했습니다.',
+    },
+    {
+      navigatorApi: {
+        share: async () => { throw new DOMException('사용자가 공유를 취소했습니다.', 'AbortError'); },
+      },
+      notify: (message) => messages.push(message),
+    },
+  );
+  assert.deepEqual(messages, []);
+});
+
+test('시스템 공유 실패에는 오류 토스트를 표시한다', async () => {
+  const messages = [];
+  await shareExternally(
+    {
+      title: '핀빅스 허브',
+      text: '[공지사항] 테스트 제목',
+      failedMessage: '항목을 공유하지 못했습니다.',
+    },
+    {
+      navigatorApi: {
+        share: async () => { throw new Error('공유 서비스 오류'); },
+      },
+      notify: (message) => messages.push(message),
+    },
+  );
+  assert.deepEqual(messages, ['항목을 공유하지 못했습니다.']);
+});
+
 test('질문 모드는 일반 상식과 공지 근거를 구분하도록 요청한다', () => {
   const request = buildAIRequest(items, 'notice', '장학금은 일반적으로 어떻게 신청해?');
   assert.equal(request.answerMode, true);
@@ -75,6 +114,62 @@ test('기본 요약에는 고정된 150자 출력 제한을 두지 않는다', (
   const request = buildAIRequest(items, 'notice');
   assert.equal(request.answerMode, false);
   assert.match(request.systemPrompt, /고정된 글자 수 제한이 없다/);
+});
+
+test('기본 요약 근거는 출처를 교차해 최대 12건을 선별한다', () => {
+  const samples = ['univ', 'coneng', 'fbs'].flatMap((board) => Array.from({ length: 5 }, (_, index) => ({
+    id: `${board}:${index}`,
+    board,
+    boardLabel: board,
+    title: `${board} 공지 ${index}`,
+    date: `2026-08-${String(20 - index).padStart(2, '0')}`,
+    summary: index === 0 ? `${board} 발췌` : '',
+  })));
+  const evidence = prepareAIEvidence(samples, 'notice');
+  assert.equal(evidence.stats.selectedCount, 12);
+  assert.deepEqual(evidence.items.slice(0, 6).map((item) => item.board), [
+    'univ', 'coneng', 'fbs', 'univ', 'coneng', 'fbs',
+  ]);
+  assert.equal(evidence.stats.sourceCount, 3);
+});
+
+test('질문의 조사와 어미를 제거하고 관련 공지만 선별한다', () => {
+  const samples = [
+    { id: '1', board: 'univ', title: '국가장학금 2차 신청 안내', date: '2026-08-20', summary: '' },
+    { id: '2', board: 'fbs', title: '수강신청 변경 안내', date: '2026-08-19', summary: '' },
+    { id: '3', board: 'coneng', title: '장학금 신청 대상 안내', date: '2026-08-18', summary: '재학생 대상' },
+  ];
+  assert.deepEqual(extractQueryTerms('장학금은 일반적으로 어떻게 신청해?'), ['장학금', '신청']);
+  const evidence = prepareAIEvidence(samples, 'notice', '장학금은 일반적으로 어떻게 신청해?');
+  assert.deepEqual(evidence.items.map((item) => item.id), ['3', '1']);
+  assert.equal(evidence.stats.excerptCount, 1);
+  assert.equal(evidence.stats.titleOnlyCount, 1);
+});
+
+test('관련 공지가 없으면 무관한 목록을 질문 근거로 넣지 않는다', () => {
+  const evidence = prepareAIEvidence(items, 'notice', '기숙사 세탁실 운영시간은?');
+  assert.equal(evidence.stats.selectedCount, 0);
+  assert.match(evidence.text, /직접 일치하는 목록 자료 없음/);
+});
+
+test('근거에는 출처와 부서 및 자료 등급을 포함하고 게시일을 마감일로 해석하지 않는다', () => {
+  const request = buildAIRequest([{
+    id: '1', board: 'univ', boardLabel: '상명대학교 공지사항', writer: '학생복지팀',
+    title: '장학금 안내', date: '2026-08-23', summary: '',
+  }], 'notice');
+  assert.match(request.userPrompt, /자료 등급: 제목 중심/);
+  assert.match(request.userPrompt, /출처: 상명대학교 공지사항/);
+  assert.match(request.userPrompt, /작성 부서: 학생복지팀/);
+  assert.match(request.systemPrompt, /날짜 필드는 게시일/);
+  assert.match(request.systemPrompt, /마감일이나 행사일로/);
+});
+
+test('사실 중심 생성은 샘플링과 temperature를 사용하지 않는다', () => {
+  const config = getGenerationConfig(false, 'notice');
+  assert.equal(config.do_sample, false);
+  assert.equal('temperature' in config, false);
+  assert.equal(config.max_new_tokens, 480);
+  assert.equal(getGenerationConfig(true, 'notice').max_new_tokens, 384);
 });
 
 test('학식의 국·탕·찌개 분류를 굵게 보정한다', () => {

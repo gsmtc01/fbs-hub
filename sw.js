@@ -1,7 +1,7 @@
-const CACHE_NAME = 'fbs-shell-v43';
+const CACHE_NAME = 'fbs-shell-v56';
 const APP_SHELL = [
   './', './index.html', './styles.css', './app.js', './local-llm.js', './meal-display.js', './share-utils.js',
-  './manifest.webmanifest', './assets/favicon.svg', './data/notices.json',
+  './manifest.webmanifest', './assets/favicon.svg', './assets/brand-mark.svg', './data/notices.json',
 ];
 
 self.addEventListener('install', (event) => {

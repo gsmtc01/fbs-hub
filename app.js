@@ -1,6 +1,6 @@
-import { localAI } from './local-llm.js?v=20260825-9';
+import { localAI, prepareAIEvidence } from './local-llm.js?v=20260901-1';
 import { mealMenuText } from './meal-display.js?v=20260825-1';
-import { composeSharePayload } from './share-utils.js?v=20260828-1';
+import { shareExternally } from './share-utils.js?v=20260829-1';
 
 const CONFIG = {
   dataUrl: './data/notices.json',
@@ -30,7 +30,6 @@ const INITIAL_SECTION = location.hash.slice(1) && SECTIONS.some((x) => x.id === 
 const aiIcon = (ready = false) => `<svg class="ai-main-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"></rect><path d="M9 10h.01M15 10h.01${ready ? 'M8.5 14c1.8 1.5 5.2 1.5 7 0' : 'M9 14h6'}M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path></svg>`;
 const SPEAKER_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.8 8.5H3.5v7h3.3L11 19V5Z"></path><path d="M15.2 9.1a4.2 4.2 0 0 1 0 5.8M17.8 6.5a7.8 7.8 0 0 1 0 11"></path></svg>`;
 const STOP_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="7" width="10" height="10" rx="1.5"></rect></svg>`;
-const SHARE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="18" cy="5" r="2.5"></circle><circle cx="6" cy="12" r="2.5"></circle><circle cx="18" cy="19" r="2.5"></circle><path d="m8.2 10.8 7.6-4.5M8.2 13.2l7.6 4.5"></path></svg>`;
 const ITEM_SHARE_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 16V3M7.5 7.5 12 3l4.5 4.5"></path><path d="M5 11v9h14v-9"></path></svg>`;
 const SEND_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 16 8-16 8 3-8-3-8Z"></path><path d="M7 12h13"></path></svg>`;
 const STAR_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z"></path></svg>`;
@@ -75,13 +74,15 @@ const state = {
   personalization: loadPersonalization(),
   favorites: new Set(loadStoredArray('fbs.favorites')),
   readItems: new Set(loadStoredArray('fbs.readItems')),
-  mobileAIExpanded: localStorage.getItem('fbs.mobileAIExpanded') === 'true',
-  aiText: '', aiBusy: false, aiStopping: false, aiError: '', aiSpeaking: false, aiQuestion: '', aiDraft: '', aiRequestId: 0, showPastCalendar: false,
+  aiExpanded: false,
+  aiText: '', aiBusy: false, aiStopping: false, aiError: '', aiSpeaking: false, aiQuestion: '', aiDraft: '', aiEvidence: [], aiRequestId: 0, showPastCalendar: false,
   mealWeek: '',
 };
 
 let aiStreamFrame = 0;
 let aiPendingText = '';
+let lastAITrigger = null;
+let gradientFrame = 0;
 
 const $ = (selector, parent = document) => parent.querySelector(selector);
 const $$ = (selector, parent = document) => [...parent.querySelectorAll(selector)];
@@ -90,7 +91,7 @@ const els = {
   mobileMenuButton: $('#mobileMenuButton'), title: $('#sectionTitle'), mobileTitle: $('#mobileTitle'),
   filters: $('#filters'), list: $('#noticeList'), more: $('#moreButton'),
   input: $('#searchInput'), mobileInput: $('#mobileSearchInput'), ai: $('#aiContent'), aiCard: $('#aiCard'), sideRail: $('.side-rail'),
-  aiToggle: $('#mobileAIToggle'), upcoming: $('#upcomingList'), today: $('#todayLabel'), dialog: $('#settingsDialog'), infoDialog: $('#onDeviceDialog'), toast: $('#toast'),
+  mobileSearchToggle: $('#mobileSearchToggle'), aiLaunchers: $$('[data-ai-launcher]'), aiPanelClose: $('#aiPanelClose'), upcoming: $('#upcomingList'), today: $('#todayLabel'), dialog: $('#settingsDialog'), infoDialog: $('#onDeviceDialog'), toast: $('#toast'),
 };
 
 function escapeHTML(value = '') {
@@ -479,7 +480,10 @@ function renderList() {
   const directory = state.section === 'directory';
   $('#searchForm').hidden = directory;
   $('#mobileSearchForm').hidden = directory;
-  els.aiCard.hidden = directory;
+  els.mobileSearchToggle.hidden = directory;
+  if (directory) setMobileSearchExpanded(false, { focus: false });
+  els.aiCard.hidden = false;
+  els.aiLaunchers.forEach((launcher) => { launcher.hidden = false; });
   if (directory) {
     els.list.innerHTML = directoryMarkup();
     els.more.hidden = true;
@@ -517,26 +521,37 @@ function renderUpcoming() {
 }
 
 function currentAIItems() {
+  if (state.section === 'directory') return [];
   let items = sectionItems();
   if (state.section === 'calendar') {
     const today = seoulDate();
     items = items.filter((item) => item.date >= today).sort((a, b) => a.date.localeCompare(b.date));
   }
-  return items.slice(0, 12);
+  return items;
 }
 function aiEvidenceLabel() {
-  const items = currentAIItems();
-  const summaries = items.filter((item) => item.summary).length;
-  return `입력 ${items.length}건 / 짧은 요약 ${summaries}건 포함`;
+  const { stats } = prepareAIEvidence(currentAIItems(), state.section, state.aiQuestion);
+  return `선별 ${stats.selectedCount}건 · 짧은 발췌 ${stats.excerptCount}건 · 제목 중심 ${stats.titleOnlyCount}건`;
 }
 function aiGeneratedDisclosure() {
-  return '<div class="ai-generated-disclosure" role="note">생성형 AI가 만든 내용입니다.</div>';
+  return '<div class="ai-generated-disclosure" role="note"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5"></circle><path d="M10 9v5M10 6.2h.01"></path></svg><span>생성형 AI가 만든 내용입니다.</span></div>';
 }
-function updateAILabelIcon(ready) {
-  const path = $('.ai-label-icon path');
-  if (!path) return;
+function aiEvidenceMarkup() {
+  if (!state.aiEvidence.length) return '';
+  const rows = state.aiEvidence.map((item, index) => {
+    const url = safeUrl(item.url);
+    const title = escapeHTML(item.title || '제목 없음');
+    const titleMarkup = url
+      ? `<a href="${escapeHTML(url)}" target="_blank" rel="noopener noreferrer nofollow">${title}</a>`
+      : title;
+    return `<li><span>E${index + 1}</span><div>${titleMarkup}<small>${escapeHTML(item.boardLabel || sourceShort(item.board))} · ${escapeHTML(formatDate(item.date))}</small></div></li>`;
+  }).join('');
+  return `<details class="ai-evidence"><summary>근거 자료 ${state.aiEvidence.length}건 보기</summary><ol>${rows}</ol></details>`;
+}
+function updateAIStatusIcons(ready) {
   const mouth = ready ? 'M8.5 14c1.8 1.5 5.2 1.5 7 0' : 'M9 14h6';
-  path.setAttribute('d', `M9 10h.01M15 10h.01${mouth}M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3`);
+  const pathData = `M9 10h.01M15 10h.01${mouth}M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3`;
+  $$('[data-ai-launcher] svg path, .ai-label-icon path').forEach((path) => path.setAttribute('d', pathData));
 }
 function questionFormMarkup(stored, disabled = false) {
   if (!stored) return '';
@@ -544,33 +559,41 @@ function questionFormMarkup(stored, disabled = false) {
     <label class="sr-only" for="aiQuestionInput">현재 목록에 대해 AI에게 질문</label>
     <input id="aiQuestionInput" data-ai-question-input name="question" type="text" maxlength="180" autocomplete="off" placeholder="현재 목록에 대해 질문하세요" value="${escapeHTML(state.aiDraft)}" ${disabled ? 'disabled' : ''}>
     <button type="submit" aria-label="질문 보내기" ${disabled ? 'disabled' : ''}>${SEND_ICON}</button>
-  </form><small class="ai-question-note">현재 탭의 제목과 짧은 요약 범위에서 답변합니다.</small>`;
+  </form><small class="ai-question-note">질문과 관련된 공개 목록 자료를 우선 선별합니다.</small>`;
 }
 function renderAI() {
-  updateMobileAICard();
+  updateAIPanel();
   const stored = localAI.isStored();
-  const ready = stored && !state.aiError;
+  const ready = stored;
+  const sectionLabel = currentSection().desktop;
+  const contextBar = `<div class="ai-context-bar"><span>${escapeHTML(sectionLabel)}</span><small>${aiEvidenceLabel()}</small></div>`;
+  if (state.section === 'directory') {
+    els.ai.setAttribute('aria-busy', 'false');
+    updateAIStatusIcons(stored);
+    els.ai.innerHTML = `<div class="ai-welcome">${aiIcon(false)}<h3>연락처 검색 안내</h3><p>연락처 검색 결과는 상명대학교 홈페이지에서 직접 제공되므로 핀빅스 허브가 요약할 데이터를 보관하지 않습니다.</p><div class="ai-trust-list"><span>AI 메뉴는 계속 이용 가능</span><span>외부 검색 결과는 분석하지 않음</span></div><button class="secondary-button ai-primary-action" type="button" data-open-settings>AI 설정 보기</button></div>`;
+    return;
+  }
   const userMessage = state.aiQuestion
     ? `<div class="ai-user-message"><span>나</span><p>${escapeHTML(state.aiQuestion)}</p></div>`
     : '';
   const answerLabel = state.aiQuestion ? `<div class="ai-response-label">${aiIcon(true)}<span>AI 답변</span></div>` : '';
   els.ai.setAttribute('aria-busy', String(state.aiBusy));
-  updateAILabelIcon(ready);
+  updateAIStatusIcons(ready);
   if (state.aiBusy) {
-    const loadingIntro = state.aiQuestion ? answerLabel : `<div class="ai-placeholder compact">${aiIcon(true)}<h3>기기에서 요약 생성 중</h3><p>On-Device AI가 현재 탭의 제목과 짧은 요약만 분석하고 있습니다.</p></div>`;
-    els.ai.innerHTML = `${userMessage}${loadingIntro}<div class="ai-result"><div class="ai-markdown ai-streaming" id="aiStream">${renderStreamingMarkdown(state.aiText || '응답을 준비하고 있습니다.')}</div>${aiGeneratedDisclosure()}<small>${aiEvidenceLabel()}<br>내용이 정확하지 않을 수 있으므로 반드시 원문을 확인하세요.</small></div><div class="ai-actions"><button class="secondary-button ai-stop-button" type="button" data-ai-stop ${state.aiStopping ? 'disabled' : ''}>${state.aiStopping ? '중지 중' : '생성 중지'}</button></div>${questionFormMarkup(stored, true)}`;
+    const loadingIntro = state.aiQuestion ? answerLabel : `<div class="ai-loading-head">${aiIcon(true)}<div><h3>기기에서 요약하는 중</h3><p>브라우저 안에서만 처리하고 있습니다.</p></div></div>`;
+    els.ai.innerHTML = `${contextBar}<div class="ai-conversation">${userMessage}${loadingIntro}<div class="ai-result"><div class="ai-markdown ai-streaming" id="aiStream">${renderStreamingMarkdown(state.aiText || '응답을 준비하고 있습니다.')}</div>${aiGeneratedDisclosure()}<small>생성 결과는 부정확할 수 있으므로 중요한 내용은 원문에서 확인하세요.</small></div><div class="ai-actions"><button class="secondary-button ai-stop-button" type="button" data-ai-stop ${state.aiStopping ? 'disabled' : ''}>${state.aiStopping ? '중지 중' : '생성 중지'}</button></div></div>${questionFormMarkup(stored, true)}`;
     return;
   }
   if (state.aiText) {
     const voiceButton = 'speechSynthesis' in window
       ? `<button class="voice-button${state.aiSpeaking ? ' speaking' : ''}" type="button" data-ai-speak aria-label="${state.aiSpeaking ? 'AI 요약 음성 재생 중지' : 'AI 요약 음성 재생'}" aria-pressed="${state.aiSpeaking}">${state.aiSpeaking ? STOP_ICON : SPEAKER_ICON}<span class="sr-only">${state.aiSpeaking ? '음성 재생 중지' : '음성으로 듣기'}</span></button>`
       : '';
-    const shareButton = `<button class="share-button" type="button" data-ai-share aria-label="AI 요약 외부 공유">${SHARE_ICON}<span class="sr-only">AI 요약 공유</span></button>`;
-    els.ai.innerHTML = `${userMessage}${answerLabel}<div class="ai-result"><div class="ai-markdown">${renderMarkdown(state.aiText)}</div>${aiGeneratedDisclosure()}<small>${aiEvidenceLabel()}<br>제목과 요약만 입력해 생성했습니다. 내용이 정확하지 않을 수 있으므로 반드시 원문을 확인하세요.</small></div><div class="ai-actions"><button class="inline-button" type="button" data-ai-generate>${state.aiQuestion ? '기본 요약 보기' : '다시 요약'}</button>${voiceButton}${shareButton}</div>${questionFormMarkup(stored)}`;
+    const shareButton = `<button class="share-button" type="button" data-ai-share aria-label="AI 요약 외부 공유">${ITEM_SHARE_ICON}<span class="sr-only">AI 요약 공유</span></button>`;
+    els.ai.innerHTML = `${contextBar}<div class="ai-conversation">${userMessage}${answerLabel}<div class="ai-result"><div class="ai-markdown">${renderMarkdown(state.aiText)}</div>${aiGeneratedDisclosure()}${aiEvidenceMarkup()}<small>공개 목록의 제목, 날짜, 출처와 제공된 짧은 발췌를 사용했습니다. 중요한 내용은 원문에서 확인하세요.</small></div><div class="ai-actions"><button class="inline-button" type="button" data-ai-generate>${state.aiQuestion ? '기본 요약 보기' : '다시 요약'}</button>${voiceButton}${shareButton}</div></div>${questionFormMarkup(stored)}`;
     return;
   }
   const message = state.aiError || (stored ? 'On-Device AI 모델이 준비되어 있습니다. 현재 목록을 기기 안에서 요약할 수 있습니다.' : 'AI 요약을 사용하려면 설정에서 AI 모델을 먼저 다운로드하세요.');
-  els.ai.innerHTML = `<div class="ai-placeholder">${aiIcon(ready)}<h3>${state.aiError ? 'AI 기능을 시작하지 못했습니다' : stored ? 'On-Device AI 모델 준비됨' : 'On-Device AI 모델 필요'}</h3><p>${escapeHTML(message)}</p><button class="inline-button" type="button" ${stored ? 'data-ai-generate' : 'data-open-settings'}>${stored ? '요약 생성' : '설정에서 다운로드'}</button></div>${questionFormMarkup(stored)}`;
+  els.ai.innerHTML = `<div class="ai-welcome">${aiIcon(ready)}<h3>${state.aiError ? 'AI 기능을 시작하지 못했습니다' : stored ? `${escapeHTML(sectionLabel)}을 요약할까요?` : 'AI 모델을 준비해 주세요'}</h3><p>${escapeHTML(message)}</p><div class="ai-trust-list"><span>기기 안에서 처리</span><span>관련 자료를 우선 선별</span></div><button class="primary-button ai-primary-action" type="button" ${stored ? 'data-ai-generate' : 'data-open-settings'}>${stored ? '현재 탭 요약하기' : 'AI 모델 준비하기'}</button>${stored ? `<small>${aiEvidenceLabel()}</small>` : ''}</div>${questionFormMarkup(stored)}`;
 }
 
 function resetAIState() {
@@ -586,6 +609,8 @@ function resetAIState() {
   state.aiStopping = false;
   state.aiQuestion = '';
   state.aiDraft = '';
+  state.aiEvidence = [];
+  state.aiExpanded = false;
 }
 
 function stopAISpeech() {
@@ -648,6 +673,7 @@ function renderAll({ resetAI = false } = {}) {
 function setSection(section) {
   if (!SECTIONS.some((x) => x.id === section)) return;
   closeMobileMenu();
+  setMobileSearchExpanded(false, { focus: false });
   resetAIState();
   updateView(() => {
     state.section = section; state.query = ''; state.visible = state.pageSize; state.showPastCalendar = false;
@@ -749,6 +775,7 @@ function updateModelSettings() {
   const support = localAI.supportStatus();
   const { supported, experimental } = support;
   const stored = localAI.isStored();
+  updateAIStatusIcons(stored);
   const badge = $('#modelStateBadge');
   badge.textContent = stored ? '다운로드됨' : !supported ? '사용 불가' : experimental ? '실험적 지원' : '다운로드 안 됨';
   badge.className = `status-badge${stored ? ' ready' : !supported ? ' error' : experimental ? ' warning' : ''}`;
@@ -815,6 +842,7 @@ async function generateSummary(question = '') {
   const section = state.section;
   const requestId = ++state.aiRequestId;
   state.aiQuestion = question.trim();
+  state.aiEvidence = prepareAIEvidence(items, section, state.aiQuestion).items;
   state.aiDraft = '';
   state.aiBusy = true; state.aiStopping = false; state.aiText = ''; state.aiError = ''; renderAI();
   try {
@@ -838,19 +866,10 @@ async function generateSummary(question = '') {
 }
 
 async function shareExternal({ title, text, url = '', copiedMessage, failedMessage }) {
-  const payload = composeSharePayload({ title, text, url });
-  try {
-    if (navigator.share) {
-      await navigator.share(payload.shareData);
-    } else if (navigator.clipboard) {
-      await navigator.clipboard.writeText(payload.clipboardText);
-      showToast(copiedMessage);
-    } else {
-      showToast('이 브라우저에서는 외부 공유를 지원하지 않습니다.');
-    }
-  } catch (error) {
-    if (error.name !== 'AbortError') showToast(failedMessage);
-  }
+  await shareExternally(
+    { title, text, url, copiedMessage, failedMessage },
+    { navigatorApi: navigator, notify: showToast },
+  );
 }
 
 async function shareItem(key) {
@@ -899,18 +918,24 @@ async function shareAISummary() {
   });
 }
 
-function moveAICard() {
-  if (matchMedia('(max-width: 1050px)').matches) els.filters.after(els.aiCard);
-  else els.sideRail.prepend(els.aiCard);
-  updateMobileAICard();
+function updateAIPanel() {
+  const expanded = state.aiExpanded || state.aiBusy;
+  els.aiCard.classList.toggle('is-open', expanded);
+  els.aiCard.setAttribute('aria-hidden', String(!expanded));
+  els.aiCard.inert = !expanded;
+  els.aiLaunchers.forEach((launcher) => {
+    launcher.setAttribute('aria-expanded', String(expanded));
+    launcher.classList.toggle('is-open', expanded);
+  });
 }
-function updateMobileAICard() {
-  const mobile = matchMedia('(max-width: 780px)').matches;
-  const expanded = !mobile || state.mobileAIExpanded || state.aiBusy;
-  els.aiCard.classList.toggle('mobile-collapsed', mobile && !expanded);
-  els.aiToggle.hidden = !mobile;
-  els.aiToggle.setAttribute('aria-expanded', String(expanded));
-  els.aiToggle.textContent = expanded ? 'AI 접기' : 'AI 열기';
+function setAIPanelExpanded(expanded, { restoreFocus = true } = {}) {
+  state.aiExpanded = Boolean(expanded);
+  updateAIPanel();
+  if (state.aiExpanded) {
+    requestAnimationFrame(() => els.aiPanelClose.focus({ preventScroll: true }));
+  } else if (restoreFocus) {
+    (lastAITrigger || els.aiLaunchers[0])?.focus({ preventScroll: true });
+  }
 }
 
 function openMobileMenu() {
@@ -931,6 +956,17 @@ function closeMobileMenu({ restoreFocus = true } = {}) {
   els.mobileDrawer.setAttribute('aria-hidden', 'true');
   els.mobileBackdrop.setAttribute('aria-hidden', 'true');
   els.mobileMenuButton.setAttribute('aria-expanded', 'false');
+}
+
+function setMobileSearchExpanded(expanded, { focus = true } = {}) {
+  const form = $('#mobileSearchForm');
+  const open = Boolean(expanded) && !form.hidden;
+  document.body.classList.toggle('mobile-search-open', open);
+  els.mobileSearchToggle.setAttribute('aria-expanded', String(open));
+  els.mobileSearchToggle.setAttribute('aria-label', open ? '검색 닫기' : '검색 열기');
+  form.setAttribute('aria-hidden', String(!open));
+  form.inert = !open;
+  if (open && focus) requestAnimationFrame(() => els.mobileInput.focus({ preventScroll: true }));
 }
 
 document.addEventListener('click', (event) => {
@@ -989,11 +1025,15 @@ document.addEventListener('click', (event) => {
   }
   if (event.target.closest('[data-ai-speak]')) toggleAISpeech();
   if (event.target.closest('[data-ai-share]')) shareAISummary();
-  if (event.target.closest('#mobileAIToggle')) {
-    state.mobileAIExpanded = !state.mobileAIExpanded;
-    localStorage.setItem('fbs.mobileAIExpanded', String(state.mobileAIExpanded));
-    updateMobileAICard();
+  if (event.target.closest('#mobileSearchToggle')) {
+    setMobileSearchExpanded(!document.body.classList.contains('mobile-search-open'));
   }
+  const aiTrigger = event.target.closest('[data-ai-launcher]');
+  if (aiTrigger) {
+    lastAITrigger = aiTrigger;
+    setAIPanelExpanded(true);
+  }
+  if (event.target.closest('#aiPanelClose')) setAIPanelExpanded(false);
 });
 document.addEventListener('submit', (event) => {
   const form = event.target.closest('[data-ai-question-form]');
@@ -1041,12 +1081,17 @@ function submitSearch(input) {
   });
 }
 $('#searchForm').addEventListener('submit', (event) => { event.preventDefault(); submitSearch(els.input); });
-$('#mobileSearchForm').addEventListener('submit', (event) => { event.preventDefault(); submitSearch(els.mobileInput); });
+$('#mobileSearchForm').addEventListener('submit', (event) => {
+  event.preventDefault();
+  submitSearch(els.mobileInput);
+  setMobileSearchExpanded(false, { focus: false });
+});
 for (const input of [els.input, els.mobileInput]) {
   input.addEventListener('keydown', (event) => {
     if (event.key !== 'Enter') return;
     event.preventDefault();
     submitSearch(input);
+    if (input === els.mobileInput) setMobileSearchExpanded(false, { focus: false });
   });
 }
 
@@ -1055,21 +1100,6 @@ $('#pageSizeSelect').addEventListener('change', (event) => {
   state.pageSize = Number(event.target.value); state.visible = state.pageSize;
   localStorage.setItem('fbs.pageSize', String(state.pageSize)); renderList();
   requestAnimationFrame(() => animateContent());
-});
-const themeMedia = matchMedia('(prefers-color-scheme: dark)');
-function applyTheme(theme, persist = true) {
-  const selected = ['light', 'dark', 'system'].includes(theme) ? theme : 'system';
-  document.documentElement.dataset.theme = selected;
-  if (persist) localStorage.setItem('fbs.theme', selected);
-  const themeSelect = $('#themeSelect');
-  if (themeSelect) themeSelect.value = selected;
-  const effective = selected === 'system' ? (themeMedia.matches ? 'dark' : 'light') : selected;
-  $('meta[name="theme-color"]')?.setAttribute('content', effective === 'dark' ? '#111a36' : '#0e207f');
-}
-applyTheme(localStorage.getItem('fbs.theme') || 'system', false);
-$('#themeSelect').addEventListener('change', (event) => applyTheme(event.target.value));
-themeMedia.addEventListener('change', () => {
-  if (document.documentElement.dataset.theme === 'system') applyTheme('system', false);
 });
 const reduceMotion = localStorage.getItem('fbs.reduceMotion') === 'true';
 $('#reduceMotionToggle').checked = reduceMotion;
@@ -1081,7 +1111,34 @@ $('#reduceMotionToggle').addEventListener('change', (event) => {
   else requestAnimationFrame(() => animateContent());
 });
 
+const pageGradient = $('.page-gradient');
+if (pageGradient) {
+  pageGradient.addEventListener('pointermove', (event) => {
+    if (document.documentElement.classList.contains('reduce-motion')) return;
+    const x = event.clientX;
+    const y = event.clientY;
+    if (gradientFrame) cancelAnimationFrame(gradientFrame);
+    gradientFrame = requestAnimationFrame(() => {
+      const rect = pageGradient.getBoundingClientRect();
+      pageGradient.style.setProperty('--pointer-x', `${x - rect.left}px`);
+      pageGradient.style.setProperty('--pointer-y', `${y - rect.top}px`);
+      pageGradient.classList.add('is-pointer-active');
+    });
+  });
+  pageGradient.addEventListener('pointerleave', () => {
+    pageGradient.classList.remove('is-pointer-active');
+  });
+}
+
 document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape' && state.aiExpanded) {
+    setAIPanelExpanded(false);
+    return;
+  }
+  if (event.key === 'Escape' && document.body.classList.contains('mobile-search-open')) {
+    setMobileSearchExpanded(false);
+    return;
+  }
   if (!document.body.classList.contains('mobile-menu-open')) return;
   if (event.key === 'Escape') {
     closeMobileMenu();
@@ -1101,13 +1158,16 @@ document.addEventListener('keydown', (event) => {
   }
 });
 matchMedia('(max-width: 780px)').addEventListener('change', (event) => {
-  moveAICard();
-  if (!event.matches) closeMobileMenu({ restoreFocus: false });
+  updateAIPanel();
+  if (!event.matches) {
+    closeMobileMenu({ restoreFocus: false });
+    setMobileSearchExpanded(false, { focus: false });
+  }
 });
 window.addEventListener('hashchange', () => setSection(location.hash.slice(1)));
 
 async function init() {
-  prepareRepositoryLinks(); moveAICard();
+  prepareRepositoryLinks(); updateAIPanel(); setMobileSearchExpanded(false, { focus: false });
   await localAI.verifyStored().catch(() => false);
   updateModelSettings(); renderNav(); renderAI();
   els.list.innerHTML = '<div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div><div class="skeleton"></div>';

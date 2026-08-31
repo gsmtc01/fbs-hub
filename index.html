@@ -3,32 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#0e207f">
+  <meta name="theme-color" content="#ffffff">
   <meta name="description" content="상명대학교의 공지, 채용, 학사일정, 학식, 웹진과 연락처 검색을 한곳에서 이용하는 비공식 학생 프로젝트">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="핀빅스 허브">
+  <meta property="og:description" content="공지부터 학식까지, 상명대학교 정보를 한곳에서 확인하세요.">
+  <meta property="og:url" content="https://gsmtc01.github.io/fbs-hub/">
+  <meta property="og:image" content="https://gsmtc01.github.io/fbs-hub/assets/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="핀빅스 허브, 공지부터 학식까지 한곳에서">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="핀빅스 허브">
+  <meta name="twitter:description" content="공지부터 학식까지, 상명대학교 정보를 한곳에서 확인하세요.">
+  <meta name="twitter:image" content="https://gsmtc01.github.io/fbs-hub/assets/og.png">
   <title>핀빅스 허브</title>
-  <link rel="icon" href="./assets/favicon.svg?v=20260824-2" type="image/svg+xml">
+  <link rel="icon" href="./assets/favicon.svg?v=20260831-1" type="image/svg+xml">
   <link rel="manifest" href="./manifest.webmanifest">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <script>
     try {
-      const savedTheme = localStorage.getItem('fbs.theme');
-      document.documentElement.dataset.theme = ['light', 'dark', 'system'].includes(savedTheme) ? savedTheme : 'system';
-    } catch {
-      document.documentElement.dataset.theme = 'system';
-    }
+      localStorage.removeItem('fbs.theme');
+    } catch {}
+    document.documentElement.dataset.theme = 'light';
   </script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fonts-archive/IBMPlexSansKR/IBMPlexSansKR.css">
-  <link rel="stylesheet" href="./styles.css?v=20260828-1">
+  <link rel="stylesheet" href="./styles.css?v=20260901-6">
 </head>
 <body>
   <a class="skip-link" href="#content">본문으로 바로가기</a>
   <header class="topbar">
     <div class="topbar-inner">
       <a class="brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈">
-        <img src="./assets/favicon.svg?v=20260824-2" width="27" height="27" alt="">
+        <img src="./assets/brand-mark.svg?v=20260831-1" width="32" height="32" alt="">
         <span>핀빅스 허브</span>
       </a>
       <nav class="desktop-nav" aria-label="주요 메뉴"></nav>
+      <button class="ai-launcher" id="aiLauncher" type="button" data-ai-launcher aria-label="AI 요약 열기" aria-controls="aiCard" aria-expanded="false">
+        <span class="ai-launcher-symbol">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+            <path d="M9 10h.01M15 10h.01M9 14h6M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+          </svg>
+        </span>
+        <span class="ai-launcher-copy"><strong>AI 요약</strong></span>
+      </button>
       <button class="icon-button" id="settingsButton" type="button" aria-haspopup="dialog" aria-label="설정 열기">
         <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
           <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path>
@@ -38,6 +57,7 @@
     </div>
   </header>
 
+  <div class="page-gradient">
   <main id="content" class="app-shell">
     <section class="workspace" id="notice">
       <div class="mobile-heading">
@@ -46,9 +66,15 @@
             <button class="mobile-menu-button" id="mobileMenuButton" type="button" aria-controls="mobileNav" aria-expanded="false" aria-label="메뉴 열기">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
             </button>
-            <a class="mobile-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="24" height="24" alt=""><span>핀빅스 허브</span></a>
+            <a class="mobile-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/brand-mark.svg?v=20260831-1" width="28" height="28" alt=""><span>핀빅스 허브</span></a>
           </div>
           <div class="mobile-header-actions">
+            <button class="mobile-search-toggle" id="mobileSearchToggle" type="button" aria-label="검색 열기" aria-controls="mobileSearchForm" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="5.5"></circle><path d="m15 15 5 5"></path></svg>
+            </button>
+            <button class="mobile-ai-launcher" id="mobileAILauncher" type="button" data-ai-launcher aria-label="AI 요약 열기" aria-controls="aiCard" aria-expanded="false">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"></rect><path d="M9 10h.01M15 10h.01M9 14h6M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path></svg>
+            </button>
             <button class="mobile-settings" id="mobileSettingsButton" type="button" aria-haspopup="dialog" aria-label="설정 열기">
               <svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.09a2 2 0 0 1 1 1.74v.5a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.38a2 2 0 0 0-.73-2.73l-.15-.09a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"></path><circle cx="12" cy="12" r="3"></circle></svg>
             </button>
@@ -70,7 +96,7 @@
         </form>
       </div>
 
-      <form class="mobile-search search" id="mobileSearchForm" role="search">
+      <form class="mobile-search search" id="mobileSearchForm" role="search" aria-hidden="true" inert>
         <label class="sr-only" for="mobileSearchInput">제목과 요약 검색</label>
         <input id="mobileSearchInput" type="text" inputmode="search" placeholder="제목/요약 검색" autocomplete="off">
         <button type="submit" aria-label="검색">
@@ -84,23 +110,29 @@
     </section>
 
     <aside class="side-rail" aria-label="요약과 일정">
-      <section class="ai-card" id="aiCard">
+      <section class="ai-card ai-panel" id="aiCard" aria-labelledby="aiPanelTitle" aria-hidden="true" inert>
         <div class="card-label-row">
-          <span class="ai-label">
-            <svg class="ai-label-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <rect x="5" y="5" width="14" height="14" rx="4"></rect>
-              <path d="M9 10h.01M15 10h.01M9 14h6M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
-            </svg>
-            AI 요약
-          </span>
-          <button class="privacy-badge" id="onDeviceInfoButton" type="button" aria-haspopup="dialog" aria-controls="onDeviceDialog">
-            기기 안에서 처리
-            <svg viewBox="0 0 20 20" aria-hidden="true">
-              <circle cx="10" cy="10" r="7.5"></circle>
-              <path d="M10 9v5M10 6.2h.01"></path>
-            </svg>
-          </button>
-          <button id="mobileAIToggle" class="mobile-ai-toggle" type="button" aria-controls="aiContent" aria-expanded="false">AI 열기</button>
+          <div class="ai-panel-title-group">
+            <span class="ai-label" id="aiPanelTitle">
+              <svg class="ai-label-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="5" y="5" width="14" height="14" rx="4"></rect>
+                <path d="M9 10h.01M15 10h.01M9 14h6M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path>
+              </svg>
+              AI 요약
+            </span>
+          </div>
+          <div class="ai-panel-head-actions">
+            <button class="privacy-badge" id="onDeviceInfoButton" type="button" aria-haspopup="dialog" aria-controls="onDeviceDialog">
+              기기 안에서 처리
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <circle cx="10" cy="10" r="7.5"></circle>
+                <path d="M10 9v5M10 6.2h.01"></path>
+              </svg>
+            </button>
+            <button id="aiPanelClose" class="ai-panel-close" type="button" aria-label="AI 요약 닫기">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+            </button>
+          </div>
         </div>
         <div id="aiContent"></div>
       </section>
@@ -174,9 +206,11 @@
     </aside>
   </main>
 
+  </div>
+
   <footer class="site-footer">
     <div>
-      <a class="footer-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="24" height="24" alt=""><strong>핀빅스 허브</strong></a>
+      <a class="footer-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/brand-mark.svg?v=20260831-1" width="30" height="30" alt=""><strong>핀빅스 허브</strong></a>
       <p>상명대학교의 공식 서비스가 아닌 비공식 학생 프로젝트입니다.<br>게시물의 저작권과 원문은 각 원저작자에게 있습니다.</p>
     </div>
     <nav aria-label="서비스 정보">
@@ -197,7 +231,7 @@
   <div class="mobile-nav-backdrop" id="mobileNavBackdrop" aria-hidden="true"></div>
   <nav class="mobile-nav" id="mobileNav" aria-labelledby="mobileNavTitle" aria-hidden="true" inert>
     <div class="mobile-nav-head">
-      <a class="mobile-nav-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/favicon.svg?v=20260824-2" width="27" height="27" alt=""><strong id="mobileNavTitle">핀빅스 허브</strong></a>
+      <a class="mobile-nav-brand" href="#notice" data-home-link aria-label="핀빅스 허브 공지사항 홈"><img src="./assets/brand-mark.svg?v=20260831-1" width="31" height="31" alt=""><strong id="mobileNavTitle">핀빅스 허브</strong></a>
       <button class="mobile-nav-close" id="mobileNavClose" type="button" aria-label="메뉴 닫기">
         <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
       </button>
@@ -282,13 +316,6 @@
         <label class="select-row">한 번에 표시할 공지
           <select id="pageSizeSelect"><option value="10">10개</option><option value="20">20개</option><option value="30">30개</option></select>
         </label>
-        <label class="select-row">화면 테마
-          <select id="themeSelect">
-            <option value="system">시스템 설정</option>
-            <option value="light">라이트</option>
-            <option value="dark">다크</option>
-          </select>
-        </label>
         <label class="toggle-row"><span>움직임 줄이기<small>전환 효과를 최소화합니다.</small></span><input id="reduceMotionToggle" type="checkbox"></label>
       </section>
       <section class="setting-section link-list">
@@ -334,6 +361,6 @@
 
   <div id="toast" class="toast" role="status" aria-live="polite" popover="manual"></div>
   <noscript><div class="noscript">이 사이트의 검색과 필터를 사용하려면 JavaScript를 활성화해야 합니다.</div></noscript>
-  <script type="module" src="./app.js?v=20260828-4"></script>
+  <script type="module" src="./app.js?v=20260901-5"></script>
 </body>
 </html>

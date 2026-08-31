@@ -1,11 +1,11 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0e207f"><script>try{const t=localStorage.getItem('fbs.theme');document.documentElement.dataset.theme=['light','dark','system'].includes(t)?t:'system'}catch{document.documentElement.dataset.theme='system'}</script><title>개인정보 처리방침 | 핀빅스 허브</title><meta name="description" content="핀빅스 허브의 개인정보 처리방침입니다. 회원가입과 서버 저장 없이 브라우저에서만 동작하는 범위와 이용자의 권리 행사 방법을 안내합니다."><link rel="icon" href="../assets/favicon.svg?v=20260824-2"><link rel="stylesheet" href="./page.css"></head><body>
-<header class="page-top"><div><a href="../">핀빅스 허브</a><small>비공식 학생 프로젝트</small></div></header>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#ffffff"><title>개인정보 처리방침 | 핀빅스 허브</title><meta name="description" content="핀빅스 허브의 개인정보 처리방침입니다. 회원가입과 서버 저장 없이 브라우저에서만 동작하는 범위와 이용자의 권리 행사 방법을 안내합니다."><link rel="icon" href="../assets/favicon.svg?v=20260831-1"><link rel="stylesheet" href="./page.css?v=20260901-1"></head><body>
+<header class="page-top"><div><a href="../"><img src="../assets/brand-mark.svg?v=20260831-1" alt="">핀빅스 허브</a><small>비공식 학생 프로젝트</small></div></header>
 <main><p class="eyebrow">PRIVACY POLICY</p><h1>개인정보 처리방침</h1>
 
 <div class="doc-meta"><dl>
 <dt>시행일</dt><dd>2026년 8월 25일</dd>
 <dt>최종 개정일</dt><dd>2026년 8월 25일 (제1판)</dd>
-<dt>작성 기준</dt><dd>「개인정보 보호법」 제30조 및 같은 법 시행령 제31조의 기재사항</dd>
+<dt>작성 기준</dt><dd>「개인정보 보호법」</dd>
 <dt>적용 대상</dt><dd>핀빅스 허브 웹사이트 및 그 하위 페이지 전체</dd>
 </dl></div>
 
@@ -38,7 +38,7 @@
 <h2 id="a2">2. 처리하는 정보의 항목</h2>
 <p>서비스 자체는 이용자의 성명, 학번, 연락처, 이메일, 로그인 정보, 결제정보, 「개인정보 보호법」 제23조의 민감정보 및 제24조의 고유식별정보를 입력받거나 운영자 서버로 수집하지 않습니다. 다만 이용자가 추가 관심 키워드에 개인정보를 직접 입력하면 그 값은 해당 이용자의 브라우저에 저장될 수 있으므로 이름, 학번, 연락처 등을 입력하지 마십시오.</p>
 <div class="wrap"><table class="grid"><thead><tr><th>저장 위치</th><th>저장 항목</th><th>성격</th></tr></thead><tbody>
-<tr><th>로컬 스토리지</th><td><code>fbs.theme</code>(화면 테마), <code>fbs.pageSize</code>(목록 표시 개수), <code>fbs.reduceMotion</code>(움직임 줄이기), <code>fbs.mobileAIExpanded</code>(모바일 AI 펼침), <code>fbs.hidePinned</code>(상단 고정 숨김)</td><td>화면 설정값</td></tr>
+<tr><th>로컬 스토리지</th><td><code>fbs.pageSize</code>(목록 표시 개수), <code>fbs.reduceMotion</code>(움직임 줄이기), <code>fbs.hidePinned</code>(상단 고정 숨김)</td><td>화면 설정값</td></tr>
 <tr><th>로컬 스토리지</th><td><code>fbs.personalization</code>(관심 게시판·전공·키워드), <code>fbs.favorites</code>(즐겨찾기 공지 식별자), <code>fbs.readItems</code>(읽음 처리한 공지 식별자)</td><td>이용자가 직접 선택한 관심 설정</td></tr>
 <tr><th>로컬 스토리지</th><td><code>fbs.gemma4e2b.installed</code>(AI 모델 다운로드 완료 표시)</td><td>기능 상태값</td></tr>
 <tr><th>Cache Storage</th><td>다운로드한 On-Device AI 모델 파일, 앱 셸 파일(<code>fbs-shell-*</code>), 마지막으로 성공한 공지 목록 JSON</td><td>오프라인 열람과 재다운로드 방지를 위한 캐시</td></tr>
@@ -104,7 +104,7 @@
 <h2 id="a9">9. On-Device 인공지능 처리</h2>
 <p>서비스의 AI 요약은 이용자가 설정에서 직접 다운로드를 선택한 경우에만 사용할 수 있는 선택 기능이며, 생성형 인공지능 모델이 이용자 기기의 WebGPU를 통해 실행됩니다. 최신 Chrome·Edge는 공식 지원 환경입니다. Safari 26 및 iOS 26 이상의 브라우저는 WebGPU와 브라우저 캐시가 감지되는 경우에만 실험적으로 실행을 시도할 수 있으며, 현재 AI 실행 스택의 공식 지원 범위와 기기 메모리 제한 때문에 동작을 보장하지 않습니다.</p>
 <ul>
-<li><strong>입력</strong>: 현재 탭과 필터 조건에 맞는 목록 중 상위 최대 12건의 제목, 수집 단계에서 150자로 제한된 짧은 요약, 날짜, 그리고 이용자가 직접 작성한 질문. 화면에 아직 펼쳐지지 않은 항목이 포함될 수 있습니다.</li>
+<li><strong>입력</strong>: 현재 탭과 필터 조건에 맞는 목록에서 출처 다양성 또는 질문 관련도를 기준으로 선별한 최대 12건의 제목, 수집 단계에서 150자로 제한된 짧은 발췌, 날짜, 게시판·부서 정보, 그리고 이용자가 직접 작성한 질문. 화면에 아직 펼쳐지지 않은 항목이 포함될 수 있습니다.</li>
 <li><strong>처리 위치</strong>: 이용자 기기 내부. 추론 입력과 생성 결과를 운영자 서버나 외부 AI API로 전송하지 않으며, 그러한 전송을 수행하는 대체 경로도 두지 않습니다.</li>
 <li><strong>생성 결과</strong>: 기본적으로 이용자 기기에만 표시되며 운영자가 수집하거나 학습에 재사용하지 않습니다. 이용자가 공유 버튼을 선택하면 결과가 운영체제의 공유 대상 또는 클립보드로 전달됩니다.</li>
 <li><strong>음성 재생</strong>: 이용자가 음성 버튼을 선택하면 생성 결과가 브라우저 또는 운영체제의 음성 합성 엔진에 전달됩니다. 음성 엔진의 로컬·네트워크 처리 여부는 이용 환경과 선택된 음성에 따라 달라질 수 있습니다.</li>
