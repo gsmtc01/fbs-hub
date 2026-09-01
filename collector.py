@@ -1,7 +1,7 @@
 """상명대 공지사항 통합 수집기 (프로토타입)
 
 두 가지 게시판 엔진을 하나의 스키마로 정규화한다.
-  - smart  : www.smu.ac.kr / seng.smu.ac.kr 계열 (.do, mode=list|view)
+  - smart  : www.smu.ac.kr / seng.smu.ac.kr / cs.smu.ac.kr 계열 (.do, mode=list|view)
   - sponge : lib.smu.ac.kr 학술정보관 (/Board?n=notice)
 """
 from __future__ import annotations
@@ -44,6 +44,8 @@ BOARDS = {
                  "https://www.smu.ac.kr/fbs/community/notice.do"),
     "recruit": Board("recruit", "핀빅스 채용·홍보", "smart",
                      "https://www.smu.ac.kr/fbs/community/intellirecruit.do"),
+    "cs_recruit": Board("cs_recruit", "컴퓨터과학전공 채용·홍보", "smart",
+                        "https://cs.smu.ac.kr/cs/community/recruit.do"),
     "calendar": Board("calendar", "학사일정 및 전공일정", "calendar",
                       "https://fbs.smu.ac.kr/fbs/admission/calendar.do"),
     "restaurant": Board("restaurant", "학식", "restaurant",

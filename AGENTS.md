@@ -30,7 +30,7 @@
 | `app.js` | 탭·필터·검색·개인화·렌더링·음성·공유 기능 |
 | `share-utils.js` | 외부 공유 본문과 안전한 URL 조합 |
 | `local-llm.js` | Transformers.js, WebGPU, On-Device AI 프롬프트와 생성 처리 |
-| `collector.py` | 10개 출처의 요청·파싱·정규화 |
+| `collector.py` | 11개 출처의 요청·파싱·정규화 |
 | `ingest.py` | 수집 결과를 `notices.db`에 증분 적재 |
 | `export_static.py` | 공개 가능한 필드만 `data/notices.json`으로 내보내기 |
 | `validate_data.py` | 공개 JSON의 스키마·개인정보·출처 정책 검증 |
@@ -76,6 +76,7 @@
 | `coneng` | 융합공과대학 공지사항 | `smart` |
 | `fbs` | 핀빅스 공지사항 | `smart` |
 | `recruit` | 핀빅스 채용·홍보 | `smart` |
+| `cs_recruit` | 컴퓨터과학전공 채용·홍보 | `smart` |
 | `calendar` | 학사일정 및 전공일정 | `calendar` |
 | `restaurant` | 학식 | `restaurant` |
 | `today` | 상명투데이 | `webzine` |
@@ -101,13 +102,16 @@
 - `focus`는 외부 URL을 기본키로 사용하며 잘못된 URL은 `link_type="broken"`으로 유지한다.
 - `calendar`는 `selectCalendarArticle` JSON API에 연도를 반드시 전달한다.
 - `restaurant`는 `smu-table tb-w150` 범위에서 파싱하고 한식과 푸드코트의 `corner`, `menu` 구조를 보존한다.
-- 파서를 변경하면 10개 출처 전체 테스트와 공개 데이터 검증을 수행한다.
+- `recruit`와 `cs_recruit`는 화면의 `채용·홍보` 한 탭에서 함께 표시하되 출처 태그와 출처 필터로 구분한다. 두 게시판에 같은 공고가 올라와도 자동으로 병합하거나 삭제하지 않는다.
+- 파서를 변경하면 11개 출처 전체 테스트와 공개 데이터 검증을 수행한다.
 
 ## 5. 프론트엔드 규칙
 
 ### 5.1 반응형 UI와 접근성
 
 - 780px 이하에서는 모바일 상단 영역을 사용한다. 하단 고정 탭을 만들지 않으며, 상단 메뉴 버튼으로 좌측 메뉴를 연다.
+- 781px 이상 1050px 이하에서는 `.side-rail`을 `display: contents`로 두어 AI 카드, 본문, 다가오는 일정, 인스타그램 카드를 본문과 같은 너비의 한 줄 세로 배치로 쌓는다. 이 구간에 우측 레일용 2열 그리드나 카드 사이를 채우는 굵은 색 띠를 다시 넣지 않는다.
+- 상단 바의 `.topbar-inner`는 모든 폭에서 `.app-shell`과 같은 너비와 좌우 기준선을 사용한다. 781px 이상 1180px 이하에서는 브랜드와 상단 메뉴 글자를 `clamp()`로 데스크톱 크기까지 이어서 키우고, 특정 구간만 고정된 작은 값으로 되돌리지 않는다.
 - 모바일 검색은 상단의 검색 아이콘으로 열고 닫는다. 연락처 검색 탭에서는 별도의 공식 연락처 검색 폼을 사용하므로 일반 검색 아이콘을 숨긴다.
 - 모바일 메뉴, 검색, AI 패널을 열었을 때 포커스 이동, `aria-expanded`, `aria-hidden`, `inert`와 닫기 동작을 함께 유지한다.
 - 주요 본문 글자는 16px 수준을 기준으로 하고, 버튼과 입력 요소는 충분한 터치 영역을 확보한다.

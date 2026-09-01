@@ -16,6 +16,7 @@ const SECTIONS = [
   { id: 'directory', desktop: '연락처 검색' },
 ];
 const SOURCE_LABELS = { all: '전체', univ: '상명대학교', coneng: '융합공과대학', fbs: '핀빅스' };
+const RECRUIT_SOURCE_LABELS = { all: '전체', recruit: '핀빅스', cs_recruit: '컴퓨터과학전공' };
 const ZINE_LABELS = { all: '전체', today: '상명투데이', newsletter: '뉴스레터', people: '상명피플', focus: '언론 속 상명' };
 const RANGE_LABELS = { 7: '7일', 30: '30일', semester: '이번 학기', all: '전체' };
 const DEFAULT_PERSONALIZATION = {
@@ -25,7 +26,7 @@ const DEFAULT_PERSONALIZATION = {
   importantKeywords: ['장학', '채용', '수강신청'],
 };
 const PERSONAL_VIEWS = { all: '모두', interest: '관심', favorite: '즐겨찾기', new: '새 공지' };
-const PERSONALIZABLE_BOARDS = new Set(['univ', 'coneng', 'fbs', 'recruit', 'today', 'newsletter', 'people', 'focus']);
+const PERSONALIZABLE_BOARDS = new Set(['univ', 'coneng', 'fbs', 'recruit', 'cs_recruit', 'today', 'newsletter', 'people', 'focus']);
 const INITIAL_SECTION = location.hash.slice(1) && SECTIONS.some((x) => x.id === location.hash.slice(1)) ? location.hash.slice(1) : 'notice';
 const aiIcon = (ready = false) => `<svg class="ai-main-icon" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="4"></rect><path d="M9 10h.01M15 10h.01${ready ? 'M8.5 14c1.8 1.5 5.2 1.5 7 0' : 'M9 14h6'}M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"></path></svg>`;
 const SPEAKER_ICON = `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 5 6.8 8.5H3.5v7h3.3L11 19V5Z"></path><path d="M15.2 9.1a4.2 4.2 0 0 1 0 5.8M17.8 6.5a7.8 7.8 0 0 1 0 11"></path></svg>`;
@@ -67,7 +68,7 @@ function loadPersonalization() {
 const state = {
   data: null,
   section: INITIAL_SECTION,
-  query: '', source: 'all', zineSource: 'all', range: 'all', visible: 10,
+  query: '', source: 'all', zineSource: 'all', recruitSource: 'all', range: 'all', visible: 10,
   pageSize: Number(localStorage.getItem('fbs.pageSize')) || 10,
   hidePinned: localStorage.getItem('fbs.hidePinned') === 'true',
   personalView: 'all',
@@ -164,7 +165,9 @@ function itemText(item) { return `${item.title || ''} ${item.summary || ''}`.toL
 function interestKeywords() { return [...state.personalization.majorKeywords, ...state.personalization.customKeywords]; }
 function sourceIsInteresting(item) {
   const sources = state.personalization.sources;
-  return sources.includes(item.board) || (sources.includes('webzine') && ['today', 'newsletter', 'people', 'focus'].includes(item.board));
+  return sources.includes(item.board)
+    || (sources.includes('recruit') && item.board === 'cs_recruit')
+    || (sources.includes('webzine') && ['today', 'newsletter', 'people', 'focus'].includes(item.board));
 }
 function isInterested(item) {
   if (!PERSONALIZABLE_BOARDS.has(item.board)) return false;
@@ -254,10 +257,10 @@ function markdownToSpeech(value = '') {
 }
 function inferCategory(item) {
   const match = item.title.match(/^\[([^\]]{1,15})\]/);
-  return match ? match[1] : item.board === 'recruit' ? '홍보' : '';
+  return match ? match[1] : ['recruit', 'cs_recruit'].includes(item.board) ? '홍보' : '';
 }
 function sourceClass(board) { return board === 'univ' ? 'univ' : board === 'coneng' ? 'coneng' : board === 'fbs' ? 'fbs' : ''; }
-function sourceShort(board) { return board === 'univ' ? '상명대' : board === 'coneng' ? '융공대' : board === 'fbs' ? '핀빅스' : ZINE_LABELS[board] || board; }
+function sourceShort(board) { return board === 'univ' ? '상명대' : board === 'coneng' ? '융공대' : board === 'fbs' ? '핀빅스' : RECRUIT_SOURCE_LABELS[board] || ZINE_LABELS[board] || board; }
 
 function resolveRepositoryUrl() {
   if (CONFIG.repositoryUrl) return CONFIG.repositoryUrl;
@@ -307,7 +310,7 @@ function sectionItems({ includePersonal = true } = {}) {
   if (!state.data) return [];
   let items = state.data.items;
   if (state.section === 'notice') items = items.filter((x) => ['univ', 'coneng', 'fbs'].includes(x.board));
-  if (state.section === 'recruit') items = items.filter((x) => x.board === 'recruit');
+  if (state.section === 'recruit') items = items.filter((x) => ['recruit', 'cs_recruit'].includes(x.board));
   if (state.section === 'calendar') items = items.filter((x) => x.board === 'calendar');
   if (state.section === 'meal') items = items.filter((x) => x.board === 'restaurant');
   if (state.section === 'webzine') items = items.filter((x) => ['today', 'newsletter', 'people', 'focus'].includes(x.board));
@@ -316,6 +319,7 @@ function sectionItems({ includePersonal = true } = {}) {
   if (query) items = items.filter((x) => `${x.title} ${x.summary}`.toLocaleLowerCase('ko').includes(query));
   if (state.section === 'notice' && state.source !== 'all') items = items.filter((x) => x.board === state.source);
   if (state.section === 'notice' && state.hidePinned) items = items.filter((x) => !x.pinned);
+  if (state.section === 'recruit' && state.recruitSource !== 'all') items = items.filter((x) => x.board === state.recruitSource);
   if (state.section === 'webzine' && state.zineSource !== 'all') items = items.filter((x) => x.board === state.zineSource);
   if (['notice', 'recruit'].includes(state.section)) {
     const cutoff = dateCutoff();
@@ -350,6 +354,10 @@ function renderFilters() {
     const pinnedCount = allNotices.filter((x) => x.pinned).length;
     pinnedToggle = `<button type="button" class="pin-toggle${state.hidePinned ? ' active' : ''}" data-pinned-toggle aria-pressed="${state.hidePinned}" ${pinnedCount ? '' : 'disabled'}>${state.hidePinned ? '고정 공지 보기' : '고정 공지 숨기기'}<span>${pinnedCount}</span></button>`;
     html += `<div class="chip-group content-filter-group notice-source-group">${Object.entries(SOURCE_LABELS).map(([value, label]) => filterButton(label, value, state.source, 'source', value === 'all' ? base.length : base.filter((x) => x.board === value).length)).join('')}${pinnedToggle}</div>`;
+  } else if (state.section === 'recruit') {
+    const cutoff = dateCutoff();
+    const base = state.data.items.filter((x) => ['recruit', 'cs_recruit'].includes(x.board) && (!cutoff || x.date >= cutoff));
+    html += `<div class="chip-group content-filter-group">${Object.entries(RECRUIT_SOURCE_LABELS).map(([value, label]) => filterButton(label, value, state.recruitSource, 'recruitSource', value === 'all' ? base.length : base.filter((x) => x.board === value).length)).join('')}</div>`;
   } else if (state.section === 'webzine') {
     html += `<div class="chip-group content-filter-group">${Object.entries(ZINE_LABELS).map(([value, label]) => filterButton(label, value, state.zineSource, 'zine')).join('')}</div>`;
   } else {
@@ -387,7 +395,10 @@ function itemMarkup(item) {
   if (fresh) tags.push('<span class="tag new">새 공지</span>');
   if (interested) tags.push('<span class="tag interest">관심</span>');
   if (state.section === 'notice') tags.push(`<span class="tag ${sourceClass(item.board)}">${sourceShort(item.board)}</span>`);
-  if (state.section === 'recruit') tags.push(`<span class="tag">${escapeHTML(inferCategory(item))}</span>`);
+  if (state.section === 'recruit') {
+    tags.push(`<span class="tag ${item.board === 'cs_recruit' ? 'coneng' : 'fbs'}">${escapeHTML(sourceShort(item.board))}</span>`);
+    tags.push(`<span class="tag">${escapeHTML(inferCategory(item))}</span>`);
+  }
   if (state.section === 'webzine') tags.push(`<span class="tag">${escapeHTML(sourceShort(item.board))}</span>`);
   if (item.linkType === 'external') tags.push('<span class="tag external">외부 ↗</span>');
   if (broken) tags.push('<span class="tag broken">링크 확인 필요</span>');
@@ -659,7 +670,12 @@ function animateContent({ appended = false } = {}) {
 }
 
 function updateView(callback) {
-  if (motionEnabled() && document.startViewTransition) return document.startViewTransition(callback);
+  if (motionEnabled() && document.startViewTransition) {
+    const transition = document.startViewTransition(callback);
+    transition.ready.catch(() => {});
+    transition.finished.catch(() => {});
+    return transition;
+  }
   callback();
   return null;
 }

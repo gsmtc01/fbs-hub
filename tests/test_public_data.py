@@ -15,7 +15,7 @@ class PublicDataPolicyTest(unittest.TestCase):
 
     def test_high_risk_identifiers_are_rejected(self):
         boards = (
-            "univ", "coneng", "fbs", "recruit", "calendar", "restaurant",
+            "univ", "coneng", "fbs", "recruit", "cs_recruit", "calendar", "restaurant",
             "today", "newsletter", "people", "focus",
         )
         payload = {

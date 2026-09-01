@@ -26,6 +26,7 @@ BOARD_LABELS = {
     "coneng": "융합공과대학 공지사항",
     "fbs": "핀빅스 공지사항",
     "recruit": "핀빅스 채용·홍보",
+    "cs_recruit": "컴퓨터과학전공 채용·홍보",
     "calendar": "학사일정 및 전공일정",
     "restaurant": "학식",
     "today": "상명투데이",

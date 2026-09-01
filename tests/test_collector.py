@@ -58,8 +58,8 @@ MEAL_HTML = """
 
 
 class CollectorRegressionTest(unittest.TestCase):
-    def test_four_smart_boards(self):
-        for key in ("univ", "coneng", "fbs", "recruit"):
+    def test_five_smart_boards(self):
+        for key in ("univ", "coneng", "fbs", "recruit", "cs_recruit"):
             with self.subTest(board=key), patch("collector.fetch", return_value=SMART_HTML):
                 rows = collector.list_notices(key, limit=30)
                 self.assertEqual(rows[0]["title"], "테스트 공지")

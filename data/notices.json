@@ -1,6 +1,6 @@
 {
   "schemaVersion": 3,
-  "generatedAt": "2026-09-01T20:37:09+09:00",
+  "generatedAt": "2026-09-02T02:37:57+09:00",
   "summaryLimit": 150,
   "notice": "본문과 담당자 실명은 포함하지 않습니다. 링크는 항상 원문으로 연결됩니다.",
   "sources": [
@@ -33,6 +33,14 @@
       "label": "핀빅스 채용·홍보",
       "itemCount": 30,
       "updatedAt": "2026-09-01T20:36:24+09:00",
+      "status": "ok",
+      "error": ""
+    },
+    {
+      "key": "cs_recruit",
+      "label": "컴퓨터과학전공 채용·홍보",
+      "itemCount": 31,
+      "updatedAt": "2026-09-02T02:37:57+09:00",
       "status": "ok",
       "error": ""
     },
@@ -575,6 +583,20 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://www.smu.ac.kr/kor/life/notice.do?mode=view&articleNo=768081"
+    },
+    {
+      "id": "cs_recruit:768011",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] 2026 메가존클라우드 AI 부트캠프 안내 (AI 엔지니어 양성, AI 캠퍼스)",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-25",
+      "views": 236,
+      "pinned": true,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=768011"
     },
     {
       "id": "univ:768012",
@@ -1627,6 +1649,20 @@
       ]
     },
     {
+      "id": "cs_recruit:768133",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] 글로벌게임허브센터 모바일·VR 게임 테스트베드 이용자 모집 안내",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-28",
+      "views": 91,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=768133"
+    },
+    {
       "id": "restaurant:2026-08-28-L-한식-식판",
       "board": "restaurant",
       "boardLabel": "학식",
@@ -1735,6 +1771,20 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://www.smu.ac.kr/kor/life/notice.do?mode=view&articleNo=768160"
+    },
+    {
+      "id": "cs_recruit:768097",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국사이버안보학회] 2026 사이버안보 논문 공모전 개최 안내 및 홍보",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-27",
+      "views": 138,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=768097"
     },
     {
       "id": "restaurant:2026-08-27-L-한식-식판",
@@ -1859,6 +1909,34 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://www.smu.ac.kr/kor/life/notice.do?mode=view&articleNo=768124"
+    },
+    {
+      "id": "cs_recruit:768061",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] Nobel Prize Dialogue Seoul 2026 안내",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-26",
+      "views": 98,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=768061"
+    },
+    {
+      "id": "cs_recruit:768064",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] 2026 Tech Meet Up 행사 안내",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-26",
+      "views": 105,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=768064"
     },
     {
       "id": "restaurant:2026-08-26-L-한식-식판",
@@ -2063,6 +2141,20 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
+    },
+    {
+      "id": "cs_recruit:767947",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] 우리은행 제6회 모의해킹 경진대회 개최 안내",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-21",
+      "views": 317,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=767947"
     },
     {
       "id": "today:767948",
@@ -2959,6 +3051,34 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
+    },
+    {
+      "id": "cs_recruit:767518",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] [과기부•NIA] 2026 KQIC 양자 인턴십 5기 인턴사원 모집(~8/14)",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-04",
+      "views": 679,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=767518"
+    },
+    {
+      "id": "cs_recruit:767535",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[홍보] 2026 AI디지털튜터 양성 과정(하반기) 교내 홍보",
+      "summary": "",
+      "writer": "",
+      "date": "2026-08-04",
+      "views": 645,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=767535"
     },
     {
       "id": "today:767513",
@@ -4708,6 +4828,48 @@
       "url": "https://fbs.smu.ac.kr/fbs/admission/calendar.do"
     },
     {
+      "id": "cs_recruit:760981",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[대구디지털혁신진흥원] 하루만에 블록체인·스마트컨트랙트 보안위협 분석 및 대응",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-11-14",
+      "views": 7036,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=760981"
+    },
+    {
+      "id": "cs_recruit:760982",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[전기공사공제조합장학회] (재)전기공사공제조합장학회 2026년도 제21기 장학생 선발 공고",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-11-14",
+      "views": 6518,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=760982"
+    },
+    {
+      "id": "cs_recruit:760983",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국정보통신진흥협회(KAIT)] 디지털 이노베이션 인사이트 행사 초대",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-11-14",
+      "views": 6786,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=760983"
+    },
+    {
       "id": "fbs:760952",
       "board": "fbs",
       "boardLabel": "핀빅스 공지사항",
@@ -4916,6 +5078,34 @@
       "linkType": "internal",
       "thumbnail": "",
       "url": "https://www.smu.ac.kr/fbs/community/intellirecruit.do?mode=view&articleNo=759824"
+    },
+    {
+      "id": "cs_recruit:759702",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[CJ올리브네트웍스] 온라인 채용설명회",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-09-19",
+      "views": 7302,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=759702"
+    },
+    {
+      "id": "cs_recruit:759703",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[노브레이크] 청년취업사관학교 새싹(SeSAC) 교육과정",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-09-19",
+      "views": 7111,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=759703"
     },
     {
       "id": "focus:https://biz.heraldcorp.com/article/10578749",
@@ -5240,6 +5430,20 @@
       "url": "https://www.smu.ac.kr/webzine/newsletter.do?mode=view&articleNo=758349"
     },
     {
+      "id": "cs_recruit:758264",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한신대학교 대학일자리플러스센터] 2025년 AWS클라우드 직무캠프",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-08-07",
+      "views": 7768,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=758264"
+    },
+    {
       "id": "coneng:757820",
       "board": "coneng",
       "boardLabel": "융합공과대학 공지사항",
@@ -5322,6 +5526,48 @@
       "linkType": "external",
       "thumbnail": "",
       "url": "https://www.dailian.co.kr/news/view/1502193/?sc=Naver"
+    },
+    {
+      "id": "cs_recruit:756032",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[KISIA] 2025년도 정보보호 취업박람회 개최",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-05-14",
+      "views": 8498,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=756032"
+    },
+    {
+      "id": "cs_recruit:756033",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[이스트소프트] 인공지능사관학교 6기 교육생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-05-14",
+      "views": 8240,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=756033"
+    },
+    {
+      "id": "cs_recruit:756034",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[2025 서울시 매력일자리사업] '이러닝 실무인재 양성 및 취업과정' 교육생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-05-14",
+      "views": 8397,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=756034"
     },
     {
       "id": "coneng:755994",
@@ -5618,6 +5864,20 @@
       "url": "https://seng.smu.ac.kr/coneng/community/notice.do?mode=view&articleNo=755482"
     },
     {
+      "id": "cs_recruit:755483",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[아이어워즈] 2025 대학생평가단 모집 공고",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-04-23",
+      "views": 8528,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=755483"
+    },
+    {
       "id": "focus:http://www.ccnnews.co.kr/news/articleView.html?idxno=366444",
       "board": "focus",
       "boardLabel": "언론 속 상명",
@@ -5674,6 +5934,62 @@
       "url": "https://www.smu.ac.kr/webzine/sm-people.do?mode=view&articleNo=754983"
     },
     {
+      "id": "cs_recruit:754847",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[청년취업사관학교] <데이터센터 인텔리전스 보안 엔지니어 양성 과정> 교육생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-31",
+      "views": 7704,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754847"
+    },
+    {
+      "id": "cs_recruit:754849",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[CJ올리브네트웍스] 2025 상반기 신입사원 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-31",
+      "views": 8052,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754849"
+    },
+    {
+      "id": "cs_recruit:754850",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국소프트웨어산업협회] 회원사 채용연계형 교육과정 교육생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-31",
+      "views": 7807,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754850"
+    },
+    {
+      "id": "cs_recruit:754851",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국능률협회] 2025 미래내일 일경험 프로젝트 청년 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-31",
+      "views": 8390,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754851"
+    },
+    {
       "id": "people:754853",
       "board": "people",
       "boardLabel": "상명피플",
@@ -5702,6 +6018,48 @@
       "url": "https://www.skyedaily.com/news/news_view.html?ID=267728"
     },
     {
+      "id": "cs_recruit:754079",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[KISIA] 2025년도 ICT융합산업보안 인력양성사업 4,5월 교육생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-10",
+      "views": 7591,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754079"
+    },
+    {
+      "id": "cs_recruit:754080",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[이스트소프트] AI 선도기업 채용연계형 부트캠프",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-10",
+      "views": 7766,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754080"
+    },
+    {
+      "id": "cs_recruit:754083",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국정보보호산업협회] 2025년도 S-개발자 교육과정(~3.16 2차 교육생 모집 마감)",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-03-10",
+      "views": 7442,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=754083"
+    },
+    {
       "id": "newsletter:753947",
       "board": "newsletter",
       "boardLabel": "상명 뉴스레터",
@@ -5714,6 +6072,90 @@
       "linkType": "internal",
       "thumbnail": "https://www.smu.ac.kr/_attach/image/2025/03/thumb_HDOavbNEMeoUCcTILOvd.jpg",
       "url": "https://www.smu.ac.kr/webzine/newsletter.do?mode=view&articleNo=753947"
+    },
+    {
+      "id": "cs_recruit:753443",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국인터넷진흥원] 2025년도 신입직원(채용형 인턴) 채용(2/11~2/26)",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-17",
+      "views": 7837,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753443"
+    },
+    {
+      "id": "cs_recruit:753444",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[KISIA] 시큐리티아카데미 '기업형(SK쉴더스트랙)' 5기 신청(~3월 3일(월))",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-17",
+      "views": 7886,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753444"
+    },
+    {
+      "id": "cs_recruit:753278",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[한국무역협회] IT해외취업과정(Smart Cloud IT마스터 47기)",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-11",
+      "views": 7673,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753278"
+    },
+    {
+      "id": "cs_recruit:753279",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[서울시X한국능률협회] 2025 서울시 매력일자리 ‘AWS 클라우드 기반IT 전문가 양성 및 취업과정’ 참여자 모집(~2.21)",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-11",
+      "views": 7626,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753279"
+    },
+    {
+      "id": "cs_recruit:753280",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[패스트캠퍼스] 개발자 취업 포트폴리오 12주 과정 수강생 모집",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-11",
+      "views": 7641,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753280"
+    },
+    {
+      "id": "cs_recruit:753281",
+      "board": "cs_recruit",
+      "boardLabel": "컴퓨터과학전공 채용·홍보",
+      "title": "[KISIA] 한국정보보호산업협회 2025년도 S-개발자 교육과정",
+      "summary": "",
+      "writer": "컴퓨터과학전공",
+      "date": "2025-02-11",
+      "views": 7916,
+      "pinned": false,
+      "linkType": "internal",
+      "thumbnail": "",
+      "url": "https://cs.smu.ac.kr/cs/community/recruit.do?mode=view&articleNo=753281"
     },
     {
       "id": "people:752201",

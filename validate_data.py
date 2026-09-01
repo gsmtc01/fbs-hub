@@ -10,7 +10,7 @@ from urllib.parse import urlparse
 from meal_utils import meal_identity, normalize_meal_corner
 
 EXPECTED_BOARDS = (
-    "univ", "coneng", "fbs", "recruit", "calendar", "restaurant",
+    "univ", "coneng", "fbs", "recruit", "cs_recruit", "calendar", "restaurant",
     "today", "newsletter", "people", "focus",
 )
 ORG_SUFFIX = re.compile(r"(팀|과|부|실|처|센터|대학|학부|전공|단|원|위원회|사업단|학교)$")
@@ -79,7 +79,7 @@ def validate(path: Path) -> list[str]:
         errors.append(f"필수 출처가 없습니다: {', '.join(sorted(missing))}")
     sources = payload.get("sources", [])
     if {source.get("key") for source in sources} != set(EXPECTED_BOARDS):
-        errors.append("sources 메타데이터가 10개 출처와 일치하지 않습니다.")
+        errors.append("sources 메타데이터가 11개 출처와 일치하지 않습니다.")
     return errors
 
 
@@ -92,7 +92,7 @@ def main() -> None:
         for error in errors:
             print(f"[FAIL] {error}")
         raise SystemExit(1)
-    print(f"[OK] 공개 데이터 정책 및 10개 출처 검증 완료: {args.path}")
+    print(f"[OK] 공개 데이터 정책 및 11개 출처 검증 완료: {args.path}")
 
 
 if __name__ == "__main__":
