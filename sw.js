@@ -1,4 +1,4 @@
-const CACHE_NAME = 'fbs-shell-v56';
+const CACHE_NAME = 'fbs-shell-v57';
 const APP_SHELL = [
   './', './index.html', './styles.css', './app.js', './local-llm.js', './meal-display.js', './share-utils.js',
   './manifest.webmanifest', './assets/favicon.svg', './assets/brand-mark.svg', './data/notices.json',

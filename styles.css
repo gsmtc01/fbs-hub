@@ -440,10 +440,7 @@ mark { background: var(--mark); }
   .workspace { border-right: 0; }
   .filters { flex-wrap: wrap; justify-content: flex-start; padding-bottom: 8px; overflow-x: visible; }
   .range-group { margin-left: auto; }
-  .side-rail { display: grid; grid-template-columns: 1fr 1fr; border-top: 8px solid var(--page); }
-  .ai-card { border-bottom: 8px solid var(--page); }
-  .upcoming-card { min-width: 0; grid-column: 1 / -1; border-bottom: 0; }
-  .social-card { width: 100%; grid-column: 1 / -1; padding-inline: 24px; border-top: 1px solid var(--line); }
+  .upcoming-card { min-width: 0; }
   .site-footer { display: grid; grid-template-columns: minmax(230px, 1fr) auto; gap: 16px; }
   .site-footer nav { justify-content: flex-end; gap: 6px 9px; }
   .site-footer a, .site-footer button { font-size: 11px; }
@@ -926,12 +923,6 @@ body {
 }
 
 @media (min-width: 781px) and (max-width: 1050px) {
-  .topbar-inner,
-  .app-shell,
-  .site-footer {
-    width: min(100% - 40px, 880px);
-  }
-
   .topbar-inner {
     min-height: 68px;
     gap: 18px;
@@ -1352,14 +1343,12 @@ body {
   }
 
   .side-rail {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    display: contents;
   }
 
   .upcoming-card,
   .social-card {
-    width: auto;
+    width: 100%;
   }
 }
 
@@ -2357,7 +2346,7 @@ body {
 }
 
 .topbar .ai-launcher-copy strong {
-  font-size: 13.5px;
+  font-size: 16px;
   white-space: nowrap;
 }
 
@@ -2505,16 +2494,16 @@ body {
 
 @media (min-width: 781px) and (max-width: 1180px) {
   .topbar-inner {
-    gap: 12px;
+    gap: clamp(12px, 2.506vw - 7.57px, 22px);
   }
 
   .brand {
-    font-size: 17px;
+    font-size: clamp(17px, 1.003vw + 9.17px, 21px);
   }
 
   .desktop-nav .nav-button {
-    padding-inline: 9px;
-    font-size: 13px;
+    padding-inline: clamp(9px, 1.754vw - 4.7px, 16px);
+    font-size: clamp(13px, 0.877vw + 6.15px, 16.5px);
   }
 
   .topbar .ai-launcher {
@@ -2573,7 +2562,13 @@ body {
 
   .mobile-brand {
     gap: 7px;
-    font-size: 15px;
+    font-size: 17px;
+  }
+
+  .mobile-brand span {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
   }
 
   .mobile-header-actions {
@@ -2737,7 +2732,7 @@ body {
   }
 
   .mobile-brand span {
-    font-size: 14px;
+    font-size: 16px;
   }
 
   .mobile-menu-button,
