@@ -18,13 +18,10 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  deploy:
+  build:
     if: github.event_name != 'workflow_run' || github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6
@@ -50,6 +47,17 @@ jobs:
         uses: actions/upload-pages-artifact@v4
         with:
           path: dist
+
+  # 업로드 직후 같은 job에서 배포하면 아티팩트 목록 조회가 늦어
+  # "No artifacts named github-pages" 로 간헐 실패한다. job을 나눠 간격을 둔다.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v4
